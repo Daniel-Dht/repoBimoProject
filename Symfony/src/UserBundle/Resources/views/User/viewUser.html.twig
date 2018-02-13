@@ -19,6 +19,15 @@
     Description : on pourrait mettre ici les dates d'entrée dans l'hopital, son nombre de Bimo totale, 
     Les liens de tous les Bimos créées !
   </p> 
+  <h3>test -> Patient à charge :</h3>
+  {% if not user.patients.empty %}
+    <p>
+      liste de patients à charges :
+      {% for patient in user.patients %}
+        {{ patient.nom }}{% if not loop.last %}, {% endif %}
+      {% endfor %}
+    </p>
+  {% endif %}
   <br/>
 
   

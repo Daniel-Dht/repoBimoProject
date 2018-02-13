@@ -48,7 +48,7 @@ class SecurityController extends Controller
     return $this->render('default/index.html.twig') ;
   }
 
-    public function loginCheckAction(Request $request)
+  public function loginCheckAction(Request $request)
   {
     // replace this example code with whatever you need
     return $this->render('default/index.html.twig') ;
@@ -119,8 +119,8 @@ class SecurityController extends Controller
       return $this->render('UserBundle:User:addUser.html.twig', array(
         'form' => $form->createView(),
       ));
-
     }
+
     public function viewUserAction($id)
     {
       $em = $this->getDoctrine()
@@ -133,13 +133,6 @@ class SecurityController extends Controller
       if (null === $user) {
         throw new NotFoundHttpException("L'utilisateur d'id ".$id." n'existe pas.");
       }
-
-      //On génère les bimos associée:
-      // $listBimo =$em2 = $this->getDoctrine()
-      //   ->getManager()
-      //   ->getRepository('BimoBundle:Bimo')
-      //   ->findBy(array('user' => $user))
-      // ;
 
       // Le render ne change pas, on passait avant un tableau, maintenant un objet
       return $this->render('UserBundle:User:viewUser.html.twig', array(
@@ -173,8 +166,6 @@ class SecurityController extends Controller
       return $this->render('UserBundle:user:viewUser.html.twig', array(
             'user' => $user,
         ));
-
-        // , array('id' => $user->getId()));
       }
 
       return $this->render('UserBundle:user:editUser.html.twig', array(
@@ -183,4 +174,40 @@ class SecurityController extends Controller
       ));
 
     }
+
+  public function AddPatientToUserAction($idUser, $idPatient)
+    {
+      $em = $this->getDoctrine()->getManager();
+
+      $user =$em
+        ->getRepository('UserBundle:User')
+        ->find($idUser)
+      ;
+
+      $patient = $em
+        ->getRepository('BimoBundle:Patient')
+        ->find($idPatient)
+      ;
+
+      $user->addPatient($patient);
+
+      $em->persist($user);
+      $em->flush();
+
+      return $this->render('UserBundle:User:viewUser.html.twig', array(
+        'user' => $user,
+      ));
+    }
+
+    // public function listPatientAtCharge($idUser)
+    // {
+    //   $em = $this->getDoctrine()->getManager();
+
+    //   $user =$em
+    //     ->getRepository('UserBundle:User')
+    //     ->find($idUser)
+    //   ;
+
+
+    // }
 }

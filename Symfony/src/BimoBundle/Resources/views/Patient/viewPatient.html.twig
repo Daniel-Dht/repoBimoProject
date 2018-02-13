@@ -10,7 +10,14 @@
   <h4> Fiche Patient</h4>
   <hr/>
   <h2>{{patient.prenom}} {{patient.nom}}</h2>
+
+  <a href="{{ path('AddPatientToUser', {'idPatient': patient.id,'idUser': app.user.id }) }}" class="btn btn-primary">
+    Rajouter ce Patient  à votre liste personnelle
+    <i class="glyphicon glyphicon-chevron-right"></i>
+  </a>
+
   <p>
+    <br/>
     Description : on pourrait mettre ici les dates d'entrée dans l'hoital, son nombre de Bimo totale, est-ce que son état necessite un traitement urgent etc..
     Les liens de tous les Bimos crées !
     <br/> 

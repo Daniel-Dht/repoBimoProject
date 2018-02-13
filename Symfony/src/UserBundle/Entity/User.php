@@ -3,6 +3,7 @@
 namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
 
@@ -24,8 +25,14 @@ class User implements UserInterface
     private $id;
 
     /**
+     * @ORM\ManyToMany(targetEntity="BimoBundle\Entity\Patient", cascade={"persist"})
+     * @ORM\JoinTable(name="user_patient")
+     */
+    private $patients;
+
+    /**
      * @var string
-     *
+     *s
      * @ORM\Column(name="username", type="string", length=255, unique=true)
      */
     private $username;
@@ -161,5 +168,45 @@ class User implements UserInterface
     public function eraseCredentials()
     {
     }
-}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->patients = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
+    /**
+     * Add patient
+     *
+     * @param \UserBundle\Entity\Patient $patient
+     *
+     * @return User
+     */
+    public function addPatient(\BimoBundle\Entity\Patient $patient)
+    {
+        $this->patients[] = $patient;
+
+        return $this;
+    }
+
+    /**
+     * Remove patient
+     *
+     * @param \UserBundle\Entity\Patient $patient
+     */
+    public function removePatient(\BimoBundle\Entity\Patient $patient)
+    {
+        $this->patients->removeElement($patient);
+    }
+
+    /**
+     * Get patients
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPatients()
+    {
+        return $this->patients;
+    }
+}

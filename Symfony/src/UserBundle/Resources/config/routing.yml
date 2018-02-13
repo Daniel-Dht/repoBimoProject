@@ -31,3 +31,11 @@ editUser:
     requirements:
         id: \d+
 
+AddPatientToUser:
+    path:      /AddPatientToUser/{idUser}/{idPatient}
+    defaults:
+        _controller: UserBundle:Security:AddPatientToUser
+    requirements:
+        idUser: \d+   
+        idPatient: \d+
+
