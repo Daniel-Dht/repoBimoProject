@@ -1,0 +1,34 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+
+	<p>
+		Bonjour {{ app.user.username }} 
+	</p>
+
+
+	<form method="post" action="Traitement_id_malade.php">
+		<p> Veuillez entrer l'identifiant du patient :</p> 
+
+		<input type="text" id="recherche" name="id_malade"/>
+
+	</form>
+
+
+
+	<script>
+		var liste = Array();
+		{% for meddoc in listMedocs %}
+
+			liste.push("{{ meddoc.medoc }} ");
+
+		{% endfor %}
+
+		$('#recherche').autocomplete({   //  id=  "bimobundle_medproto_nomBefore"
+			source : liste,
+			minLength : 4
+		});
+
+	</script>
+   
+{% endblock %}

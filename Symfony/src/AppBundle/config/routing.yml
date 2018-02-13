@@ -1,0 +1,9 @@
+testWord:
+    path:      /pdf
+    defaults:
+        _controller: AppBundle:Default:index
+
+autoC:
+    path:      /autoC
+    defaults:
+        _controller: AppBundle:Default:autoC

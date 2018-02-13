@@ -1,0 +1,36 @@
+{% extends 'layout.html.twig' %}
+
+{#  {% stylesheets 'BimoBundle/Resources/public/css/main.css' %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css">
+
+  {% endstylesheets %} #}
+{% block title %}
+  Editez un profil Patient - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+	
+	{# On n'affiche le lien « Ajouter une annonce » qu'aux auteurs
+  (et admins, qui héritent du rôle auteur) #}
+	{% if is_granted('ROLE_ADMIN') %}
+		<p>
+			<a href="{{ path('viewPatient', {'id': patient.id}) }}" class="btn btn-primary">
+		      <i class="glyphicon glyphicon-chevron-left"></i>
+		      Retour au profil Patient
+		    </a>
+   		</p>
+		<div class="index">
+	 		<h2>Modification de profil de patient</h2>
+  			{{ include("BimoBundle:Patient:formPatient.html.twig") }}
+	 	</div>
+	{% else %}
+    	<p> Vous ne disposez pas des droits necessaires <p>
+		<a href="{{ path('viewPatient', {'id': patient.id}) }}" class="btn btn-default">
+  			<i class="glyphicon glyphicon-chevron-left"></i>
+  			Retour au profil Patient
+		</a>
+	{% endif %}
+
+
+   
+{% endblock %}

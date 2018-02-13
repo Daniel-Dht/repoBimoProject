@@ -1,0 +1,27 @@
+.jeanmi
+{
+		/*border: 	solid;	*/
+		display: 	flex;	
+		justify-content: 	space-around;	
+		align-items: 	center;	
+}
+
+
+body
+{
+	padding-left: 	10px;
+}
+
+.before
+{
+	border: solid;
+	background-color:rgb(180,260,180);
+}
+.during
+{
+	border: solid;
+}
+.treat
+{
+	border: solid;
+}

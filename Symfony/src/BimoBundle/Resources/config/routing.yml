@@ -1,0 +1,133 @@
+addHosp:
+    path:      /addHosp/{idPatient}
+    defaults:
+        _controller: BimoBundle:Hosp:addHosp
+        idPatient: null
+    requirements:
+        idPatient: \d+
+
+viewHosp:
+    path:      /viewHosp/{id}
+    defaults:
+        _controller: BimoBundle:Hosp:viewHosp
+    requirements:
+        id: \d+
+
+deleteHosp:
+    path:      /deleteHosp/{id}
+    defaults:
+        _controller: BimoBundle:Hosp:deleteHosp
+    requirements:
+        id: \d+
+
+addMedProto:
+    path:      /addMedProto/{idBimo}
+    defaults:
+        _controller: BimoBundle:Bimo:addMedProto
+        idBimo: null
+    requirements:
+        idBimo: \d+
+
+editMedProto:
+    path:      /editMedProto/{id}
+    defaults:
+        _controller: BimoBundle:Bimo:editMedProto
+        id: null
+    requirements:
+        id: \d+
+
+addBimo:
+    path:      /addBimo/{idPatient}
+    defaults:
+        _controller: BimoBundle:Bimo:addBimo
+        idPatient: null
+    requirements:
+        patient: \d+
+
+
+addPatient:
+    path:      /addPatient
+    defaults:
+        _controller: BimoBundle:Patient:add
+
+listPatient:
+    path:      /listPatient/{page}
+    defaults:
+        _controller: BimoBundle:Patient:list
+        page: 1
+    requirements:
+        page: \d*
+
+listBimo:
+    path:      /listBimo/{page}
+    defaults:
+        _controller: BimoBundle:Bimo:list
+        page: 1
+    requirements:
+        page: \d*
+
+urgentListBimo:
+    path:      /UrgentlistBimo/{page}
+    defaults:
+        _controller: BimoBundle:Bimo:urgentList
+        page: 1
+    requirements:
+        page: \d*
+
+viewBimo:
+    path:      /viewBimo/{id}
+    defaults:
+        _controller: BimoBundle:Bimo:viewBimo
+    requirements:
+        id: \d+
+
+pdfBimo:
+    path:      /pdfBimo/{id}
+    defaults:
+        _controller: BimoBundle:Bimo:PDF
+    requirements:
+        id: \d+
+
+test:
+    path:      /test
+    defaults:
+        _controller: BimoBundle:Bimo:test
+
+editBimo:
+    path:      /editBimo/{id}
+    defaults:
+        _controller: BimoBundle:Bimo:editBimo
+    requirements:
+        id: \d+
+
+deleteBimo:
+    path:      /deleteBimo/{id}
+    defaults:
+        _controller: BimoBundle:Bimo:deleteBimo
+    requirements:
+        id: \d+
+
+
+viewPatient:
+    path:      /viewPatient/{id}/{idBimo}
+    defaults:
+        _controller: BimoBundle:Patient:viewPatient
+        idBimo: null
+    requirements:
+        id: \d+
+        idBimo: \d+
+
+editPatient:
+    path:      /editPatient/{id}
+    defaults:
+        _controller: BimoBundle:Patient:edit
+    requirements:
+        id: \d+
+
+deletePatient:
+    path:      /deletePatient/{id}
+    defaults:
+        _controller: BimoBundle:Patient:deletePatient
+    requirements:
+        id: \d+
+

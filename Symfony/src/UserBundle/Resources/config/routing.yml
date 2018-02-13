@@ -1,0 +1,33 @@
+view:
+    path:      /homepage
+    defaults:
+        _controller: AppBundle:Default:index
+
+addUser:
+    path:      /addUser
+    defaults:
+        _controller: UserBundle:Security:add
+
+
+listUser:
+    path:      /listUser/{page}
+    defaults:
+        _controller: UserBundle:Security:list
+        page: 1
+    requirements:
+        page: \d*
+
+viewUser:
+    path:      /viewUser/{id}
+    defaults:
+        _controller: UserBundle:Security:viewUser
+    requirements:
+        id: \d+
+
+editUser:
+    path:      /editUser/{id}
+    defaults:
+        _controller: UserBundle:Security:editUser
+    requirements:
+        id: \d+
+

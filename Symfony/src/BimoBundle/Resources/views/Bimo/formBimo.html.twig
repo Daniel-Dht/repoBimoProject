@@ -1,0 +1,105 @@
+
+<div class="well">
+  <legend style="text-align: center;">Création d'un BIMO</legend>
+{# 	{{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+  {{ form_errors(form) }} #}
+  {% macro tagCollectionItem(formData) %}
+    <div class="dosage">{{ form_widget(formData.dosage) }}</div>
+    <div class="forme">{{ form_errors(formDate.forme) }}</div>
+  {% endmacro %}
+
+{{ form_start(form)}}
+
+  {{ form_row(form.patient) }}
+  {{ form_row(form.urgency, {'label':'Ce BIMO necessite un traitement urgent'}) }}
+
+
+  <ul class="tags" data-prototype="{{ form_widget(form.medProtos.vars.prototype)|e }}">
+    {% for medProto in form.medProtos %}
+      <li> {{ form_row(medProto.nom) }} </li>
+    {% endfor %}
+  </ul>
+
+
+  {# {{ form_widget(form) }} #}
+  {# {{ form_end(form, {'render_rest': false}) }} #}
+  {{ form_row(form.save) }}
+  {{ form_end(form) }}
+</div>
+
+
+
+
+{# On charge la bibliothèque jQuery. Ici, je la prends depuis le CDN google
+   mais si vous l'avez en local, changez simplement l'adresse. #}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+{# Voici le script en question : #}
+<script type="text/javascript">
+
+  $(document).ready(function() {
+    // On récupère la balise <div> en question qui contient l'attribut « data-prototype » qui nous intéresse.
+    
+   // var $container = $('div#bimobundle_bimo_medProtos');
+    var $container = $('div#bimobundle_bimo_medProtos');
+    // On ajoute un lien pour ajouter un nouveau MedProto
+    var $addLink = $('<a href="#" id="add_medProto" class="btn btn-primary">Ajouter une ligne</a>');
+    $container.append($addLink);
+    // On ajoute un nouveau champ à chaque clic sur le lien d'ajout.
+    $addLink.click(function(e) {
+      addMedProto($container);
+      e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+      return false;
+    });
+      
+    // On définit un compteur unique pour nommer les champs qu'on va ajouter dynamiquement
+    var index = $container.find(':input').length;
+
+    // On ajoute un premier champ automatiquement
+    if (index == 0) {
+      addMedProto($container);
+    } 
+    else {
+      // Pour chaque MedProto déjà existante, on ajoute un lien de suppression
+      $container.children('div').each(function() {
+        addDeleteLink($(this));
+      });
+    }
+
+    // La fonction qui ajoute un formulaire MedProto
+    function addMedProto($container) {
+      // Dans le contenu de l'attribut « data-prototype », on remplace :
+      // - le texte "__name__label__" qu'il contient par le label du champ
+      // - le texte "__name__" qu'il contient par le numéro du champ
+      var $prototype = $($container.attr('data-prototype').replace(/__name__label__/g, 'MedProto n°' + (index+1))
+          .replace(/__name__/g, index));
+
+      $container.append($addLink);
+    
+      // On ajoute le prototype modifié à la fin de la balise <div>
+      $container.append($prototype);
+
+      // Enfin, on incrémente le compteur pour que le prochain ajout se fasse avec un autre numéro
+      index++;
+      // On ajoute au prototype un lien pour pouvoir supprimer le MedProto
+      addDeleteLink($prototype);
+    }
+
+    // La fonction qui ajoute un lien de suppression d'un medProto
+    function addDeleteLink($prototype) {
+      // Création du lien
+      $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+
+      // Ajout du lien
+      $prototype.append($deleteLink);
+
+      // Ajout du listener sur le clic du lien
+      $deleteLink.click(function(e) {
+        $prototype.remove();
+        e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+        return false;
+      });
+    }
+  });
+
+</script>

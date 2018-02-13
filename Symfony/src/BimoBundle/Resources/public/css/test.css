@@ -1,0 +1,61 @@
+.jeanmi
+{
+		/*border: 	solid;	*/
+		display: 	flex;	
+		justify-content: 	space-around;	
+		align-items: 	center;	
+}
+
+
+body
+{
+	padding-left: 	10px;
+}
+
+.before:nth-child(1)
+{
+	/*border: solid;*/
+	background-color:rgb(180,260,180);
+	padding: 2%;
+	flex: 	1;
+}
+.during:nth-child(2)
+{
+	/*border: solid;*/
+	padding: 2%;
+	flex: 	1;
+}
+.during:nth-child(3)
+{
+	/*border: solid;*/
+	padding: 2%;
+	flex: 	1;
+}
+
+.containeur
+{
+	display :flex;
+	justify-content: 	space-around	;		
+	/*flex-wrap: 	wrap;	*/
+}
+
+.treat
+{
+	/*border: solid;*/
+
+	margin: 	auto;	
+}
+
+table
+{
+    border-collapse: collapse; /* Les bordures du tableau seront collées (plus joli) */
+}
+td
+{
+    border: 1px solid black;
+}
+
+.testviewbimo
+{
+	/*background-color:rgb(180,260,180);*/
+}

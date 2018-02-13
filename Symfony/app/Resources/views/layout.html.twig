@@ -1,0 +1,99 @@
+{# app/Resources/views/layout.html.twig #}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{% block title %}Bimo Platform{% endblock %}</title>
+
+  {% block stylesheets %}
+    {# On charge le CSS de bootstrap depuis le site directement #}
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" href="{{ asset('css/testY.css') }}">
+    {# <link rel="stylesheet" href="/Symfony/web/css/testY.css" type="text/css" /> #}
+    {# <link rel="stylesheet" href="/Symfony/src/BimoBundle/Resources/public/css/test4.css" type="text/css" /> #}
+    {# autocompletion mator : #}
+ 
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+  {% endblock %}
+</head>
+
+<body style = "background-image:url(/Symfony/web/images/back10.jpg);background-repeat:no-repeat;background-size:100%;background-attachment:fixed;">
+  
+  
+  <div class="jeanmi">
+    <div id="header" class="jumbotron" style="border-radius:0px 23px 80px 23px;width:65%;">
+      <h1>Bimo Platform</h1>
+      <i>
+        Projet en cours de developpement 
+      </i>
+      <p>
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+          - Connecté en tant que {{ app.user.username }} -
+
+        {% endif %}
+      </p>
+    </div>
+{#     <div>
+        <img src="{{ asset('images/logo.jpg') }}" alt='logo hopital' />
+    </div> #}
+  </div>
+
+  <div class='container' >
+  <div class="row">
+    <div id="menu" class="col-md-3">
+      <h3>Menu :</h3>
+      <ul class="nav nav-pills nav-stacked">
+        <li><a href="{{ path('home')}}">Accueil</a></li>
+        {% if app.user.username is defined %}
+          <li><a href="{{ path('logout') }}">Logout</a></li>
+        {% else %}
+          <li><a href="{{ path('login') }}">Login</a></li>
+        {% endif %}   
+        <li><a href="{{ path('listPatient') }}">Liste de patient</a></li>
+        
+        <li><a href="{{ path('listBimo') }}">Derniers BIMO remplis</a></li>
+        <li><a href="{{ path('urgentListBimo') }}">Dossier urgents</a></li>
+        {% if is_granted('ROLE_ADMIN') %}
+          <h4> Droits Admin : </h4>
+            <li><a href="{{path('addBimo')}}">Ajouter une BIMO</a></li>
+            <li><a href="{{path('addPatient') }}">Ajouter un patient</a></li>
+             <li><a href="#">Patients à charge</a></li>
+        {% endif %}
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <h4> Droits Admin Superieur : </h4>
+              <li><a href="{{ path('listUser') }}">Gestion du personnel</a></li>
+              <li><a href="{{ path('addUser') }}">Ajouter un utilisateur</a></li>
+        {% endif %}
+      </ul>
+
+    </div>
+    <div id="content" class="col-md-9">
+      {% block body %}
+      {% endblock %}
+    </div>
+
+  </div>
+  </div>
+
+ 
+
+  <footer style="text-align:right">
+    {# <p>The sky's the limit © {{ 'now'|date('Y') }} and beyond.</p> #}
+  </footer>
+
+
+  {% block javascripts %}
+    {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  {% endblock %}
+
+</body>
+</html>

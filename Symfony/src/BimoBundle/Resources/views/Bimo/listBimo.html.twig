@@ -1,0 +1,81 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}
+  Listes des Bimos - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+  <h2>Liste des BIMO</h2>
+  <div class="well">
+    <ul style="list-style:none;">
+      {% for bimo in listBimo %}
+       
+          <li>
+            <div  id='bimoHover{{bimo.id}}' style ="padding:2px;">
+              <a href="{{ path('viewBimo', {'id': bimo.id}) }}">
+                bimo concernant {{ bimo.patient.prenom}} {{ bimo.patient.nom}}
+              </a>
+              créé le {{ bimo.date|date('d/m/Y') }} 
+              (id n°{{bimo.id}})
+              {% if bimo.urgency %}
+                <p> 
+                  Ce BIMO représente un cas à traité avec <strong>URGENCE</strong>
+                </p>
+              {% endif %}
+            </div>
+          </li>
+        
+      {% else %}
+        <li>Pas (encore !) de BIMO</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <ul class="pagination">
+  {# On utilise la fonction range(a, b) qui crée un tableau de valeurs entre a et b #}
+    {% for p in range(1, nbPages) %}
+      <li{% if p == page %} class="active"{% endif %}>
+        <a href="{{ path('listBimo', {'page': p}) }}">{{ p }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+
+  {% if is_granted('ROLE_ADMIN') %}
+    <h4> Droits Admin : </h4>
+        <li>
+          <a href="{{path('addBimo') }}" class="btn btn-success">
+            <i class="glyphicon glyphicon-chevron-right"></i>
+            Ajouter un BIMO
+          </a>
+        </li>
+  {% endif %}
+
+  <script >
+      var divBimo = new Array(); 
+  </script>
+  {% for bimo in listBimo %}
+
+    <script type="text/javascript">
+
+      divBimo.push(document.getElementById('bimoHover{{bimo.id}}'));
+
+
+      divBimo[{{loop.index0}}].addEventListener('mouseover', function() {
+          divBimo[{{loop.index0}}].style ="padding: 16px;background-color:rgb(200,200,200);border-radius: 5px;cursor:pointer;";    
+      });
+
+      divBimo[{{loop.index0}}].addEventListener('mouseleave', function() {
+          divBimo[{{loop.index0}}].style ="padding: 2px;";
+      });
+
+      divBimo[{{loop.index0}}].addEventListener('click', function() {         
+          window.location = "{{ path('viewBimo', {'id': bimo.id })|escape('js') }}";
+        
+          
+      });
+
+    </script>
+  {% endfor %}
+
+{% endblock %}

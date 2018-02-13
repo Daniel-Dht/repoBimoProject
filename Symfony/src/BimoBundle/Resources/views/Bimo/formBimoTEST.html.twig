@@ -1,0 +1,86 @@
+
+<h2>Order a Pizza</h2>
+
+
+{{ form_start(form) }}
+<div>
+    <fieldset>
+      <legend style="text-align: center;">BIMO</legend>
+      {{ form_label(form.urgency) }}{{ form_widget(form.urgency) }}
+      {{ form_label(form.patient) }} {{ form_widget(form.patient) }}
+      {{ form_label(form.date) }}{{ form_widget(form.date) }}
+      
+    </fieldset>      
+</div>
+
+
+{% macro prototype(medProto) %}
+<tr>
+    <td>
+        {{ form_widget(medProto.nom, { "empty_value": "" }) }}
+        {{ form_errors(medProto.nom) }}
+    </td>
+    <td>
+        {{ form_widget(medProto.dosage) }}
+        {{ form_errors(medProto.dosage) }}
+    </td>
+    <td>
+        <ul>
+            <li><a href="#">Add</a></li>
+            <li><a href="#">Remove</a></li>
+        </ul>
+    </td>
+</tr>
+{% endmacro %}
+
+<script type="text/html">
+
+    prototype="{{ form_widget(form.medProtos.vars.prototype) | e }}" {# don't know if it is the best way to access prototype #}
+</script>
+
+<table>
+    <caption>{{ form_label(form.medProtos) }}</caption>
+    <thead>
+        <tr>
+            <th>nom</th>
+            <th>dosage</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for key, medProto in form.medProtos %}
+            {{ _self.prototype(medProto) }}
+        {% endfor %}
+    </tbody>
+</table>
+
+{{ form_rest(form) }}{# form.medProtos's prototype is rendered twice #}
+{{ form_errors(form) }}
+
+<input type="submit" />
+
+{{ form_rest(form) }}
+{{ form_end(form) }}
+
+<script>
+/* add pizzas */
+var add = function() {
+    var index = $('table tbody tr').length;
+    var row = $('script[type="text/html"]').text().replace(/\$\$name\$\$/g, index);
+    $('table tbody').append(row);
+};
+$('table tbody a').live('click', function(event) {
+    if ($(this).text() === "Add") {
+        add();
+    }
+    if ($(this).text() === "Remove") {
+        $(this).closest('tr').remove();
+    }
+    event.preventDefault();
+});
+if ($('table tbody tr').length === 0) {
+    add();
+}
+</script>
+
+

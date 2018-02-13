@@ -1,0 +1,34 @@
+{% extends 'layout.html.twig' %}
+
+{#  {% stylesheets 'BimoBundle/Resources/public/css/main.css' %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css">
+
+  {% endstylesheets %} #}
+ {% block title %}
+  Editez un Bimo - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+	<p>
+		<a href="{{ path('viewBimo',{'id':bimo.id}) }}" class="btn btn-primary">
+	        <i class="glyphicon glyphicon-chevron-left"></i>
+	        Retour au Bimo
+	    </a>
+	</p>
+
+	{# On n'affiche le lien « Ajouter une annonce » qu'aux auteurs
+  (et admins, qui héritent du rôle auteur) #}
+	{% if is_granted('ROLE_ADMIN') %}
+		<div class="index">
+
+	 		<h2>Ajout d'une ligne au BIMO</h2>
+
+  			{{ include("BimoBundle:Bimo:formMedProto.html.twig") }}
+
+	  	
+
+	 	</div>
+	{% endif %}
+   
+{% endblock %}

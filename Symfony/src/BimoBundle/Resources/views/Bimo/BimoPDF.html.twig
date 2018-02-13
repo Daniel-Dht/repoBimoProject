@@ -1,0 +1,77 @@
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="/Symfony/web/css/testY.css" type="text/css" />
+{% endblock %}
+
+{% block body %}
+
+  <div>
+      <img height="200" width="300" src="/Symfony/web/images/logoVX.png" alt='logo hopital' />
+  </div>
+  <h2>Fiche BIMO </h2>
+
+
+  <p>
+    Patient : <strong>{{bimo.patient.prenom}} {{bimo.patient.nom}} </strong>
+    <br />
+    BIMO du: {{bimo.date|date('d/m/Y')}}
+  </p> 
+
+  <br/>
+ 
+
+  <table id="tableau" style="
+    border-collapse: collapse;  
+    border: 1px solid black;
+    ">
+    <thead>
+
+      <tr>
+        <th><strong></strong></th>
+        <th class="borderR" colspan="4"><strong>Traitement HABITUEL AVANT hospitalisation :</strong></th>
+        <th class="borderR" colspan="4"><strong>TRAITEMENT HOSPITALISATION :</strong></th>
+        <th colspan="5"><strong>CONCERTATION Médecin /Pharmacien :</strong></th>
+      </tr>
+      <tr> 
+        <th><strong>Sources </strong></th>
+        <th><strong>Medicament </strong></th>
+        <th><strong>Dosage </strong></th>
+        <th><strong>Forme </strong></th>
+        <th class="borderR"><strong>posologie </strong></th>
+        <th><strong>Medicament </strong></th>
+        <th><strong>Dosage </strong></th>
+        <th><strong>Forme</strong></th>
+        <th class="borderR"><strong>posologie </strong></th>
+        <th><strong>Divergence </strong></th>
+        <th><strong>Type de divergence </strong></th>
+        <th><strong>Gravité </strong></th>
+        <th class='propCom'><strong>Proposition du pharmacien </strong></th>
+        <th class='propCom'><strong>Commentaire du medecin </strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for medProto in listMedProto %}
+
+        <tr> 
+          <td>{{medProto.source}}</td>
+          <td>{{medProto.nomBefore}}</td>
+          <td>{{medProto.dosageBefore}}</td>
+          <td>{{medProto.formBefore}}</td>
+          <td class="borderR">{{medProto.poseBefore}}</td>
+          <td>{{medProto.nom}}</td>
+          <td>{{medProto.dosage}}</td>
+          <td>{{medProto.forme}}</td>
+          <td class="borderR">{{medProto.poso}}</td>
+          <td>{{medProto.divergence}}</td>
+          <td>{{medProto.divergenceType}}</td>
+          <td>{{medProto.severity}}</td>    
+          <td class='propCom'style="min-width: 250px;max-width: 250px;word-wrap: break-word;">{{medProto.proposition}}</td>
+          <td class='propCom' style="min-width: 250px;max-width: 250px;word-wrap: break-word;">{{medProto.comment}}</td>
+        </tr>
+          
+      {% endfor %}
+      </tbody>
+    <table>
+  
+
+{% endblock %}

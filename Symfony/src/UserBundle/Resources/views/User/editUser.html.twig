@@ -1,0 +1,32 @@
+{% extends 'layout.html.twig' %}
+
+
+{% block title %}
+  Editer un profil Utilisateur - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+	<p>
+		<a href="{{ path('viewUser',{'id':user.id}) }}" class="btn btn-primary">
+	      <i class="glyphicon glyphicon-chevron-left"></i>
+	      Retour au Profil Utilisateur
+	    </a>
+	</p>
+
+	{% if is_granted('ROLE_ADMIN') %}
+		
+
+ 		<h2>Modification de profil Utilisateur {{user.username}} </h2>
+		<div>{{ include("UserBundle:User:formUser.html.twig") }}</div>
+
+		    
+			
+	{% else %}
+    	<p> Vous ne disposez pas des droits necessaires <p>
+	{% endif %}
+
+
+
+   
+{% endblock %}

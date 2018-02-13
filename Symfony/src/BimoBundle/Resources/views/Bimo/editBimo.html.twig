@@ -1,0 +1,28 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+  Editez un Bimo - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+	<p>
+		<a href="{{ path('viewBimo',{'id':bimo.id}) }}" class="btn btn-primary">
+	        <i class="glyphicon glyphicon-chevron-left"></i>
+	        Retour au Bimo
+	    </a>
+	</p>
+
+	{% if is_granted('ROLE_ADMIN') %}
+		<div class="index">
+
+	 		<h2>Vous éditez un BIMO</h2>
+
+  			{{ include("BimoBundle:Bimo:formBimoEdit.html.twig") }}
+
+
+	 	</div>
+	{% else %}
+    	<p> Vous ne disposez pas des droits necessaires <p>
+	{% endif %}
+   
+{% endblock %}

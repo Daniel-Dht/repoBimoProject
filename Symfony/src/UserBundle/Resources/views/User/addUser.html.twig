@@ -1,0 +1,30 @@
+{% extends 'layout.html.twig' %}
+
+
+{% block title %}
+  Ajouter un Utilisateur - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    <h3>
+    	Création d'un Profil utilisateur
+    </h3>
+
+	{# On n'affiche le lien « Ajouter une annonce » qu'aux auteurs
+  (et admins, qui héritent du rôle auteur) #}
+
+	{% if is_granted('ROLE_ADMIN') %}
+		<div class="index">
+
+
+  			{{ include("UserBundle:User:formUser.html.twig") }}
+  			
+	 	</div>
+	{% endif %}
+
+
+	
+
+   
+{% endblock %}

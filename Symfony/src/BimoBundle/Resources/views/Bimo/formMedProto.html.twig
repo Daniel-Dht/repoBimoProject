@@ -1,0 +1,283 @@
+<div class="well">
+	{# {{ form_start(form) }} #}
+	{{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+	{{ form_errors(form) }}
+
+	<div class='containeurMedProto'>
+
+		<div class = 'containeurMedChoice'>
+
+			<div class='beforeHosp'>
+
+				<h4 style="padding-left:30%;"> <strong>Avant l'entrée à l'hopital :</strong> </h4><br/>
+				<div class="form-group">
+					{{ form_label(form.nomBefore, "Medicament", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+					{{ form_errors(form.nomBefore) }}
+					<div class="col-sm-8">	
+						{{ form_widget(form.nomBefore, {'attr': {'class': 'form-control'}}) }}
+					</div>	
+			    </div>
+
+			    <div class="form-group">
+					{{ form_label(form.dosageBefore, "Dosage", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+					{{ form_errors(form.dosageBefore) }}
+					<div class="col-sm-8">					
+						{{ form_widget(form.dosageBefore, {'attr': {'class': 'form-control'}}) }}
+					</div>
+			    </div>
+
+			    <div class="form-group">
+					{{ form_label(form.formBefore, "Forme", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+					{{ form_errors(form.formBefore) }}
+					<div class="col-sm-8">					
+						{{ form_widget(form.formBefore, {'attr': {'class': 'form-control'}}) }}
+					</div>
+			    </div>
+
+				<div class="form-group">
+					{{ form_label(form.poso, "Posologie", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+					{{ form_errors(form.poseBefore) }}
+					<div class="col-sm-8">
+						{{ form_widget(form.poseBefore, {'attr': {'class': 'form-control'}}) }}
+					</div>
+			    </div>
+
+				<div class="form-group">
+					{{ form_label(form.medStartBefore, "Du", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+					{{ form_errors(form.medStartBefore) }}
+					<div class="col-sm-8">
+						{{ form_widget(form.medStartBefore) }}
+					</div>
+			    </div>
+
+				<div class="form-group">
+					{{ form_label(form.medEndBefore, "au", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+					{{ form_errors(form.medEndBefore) }}
+					<div class="col-sm-8">
+						{{ form_widget(form.medEndBefore) }}
+					</div>
+			    </div>
+
+				<div class="form-group">
+					{{ form_label(form.dateMedBefore, "pas la peine", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+					{{ form_errors(form.dateMedBefore) }}
+					<div class="col-sm-8">
+						{{ form_widget(form.dateMedBefore) }}
+					</div>
+			    </div>	
+			</div> {# fin div "before" #}
+
+			<div class="duringHosp">
+				<h4><strong>Pendant la prise en charge :</strong></h4><br/>
+			    <div class="form-group">
+			      	{# {{ form_label(form.nom, "Medicament", {'label_attr': {'class': 'col-sm-3 control-label'}}) }} #}	
+			        {{ form_errors(form.nom) }}
+			     	 <div class="col-sm-8">
+			        	{{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+			      	</div>
+			    </div>
+
+			    <div class="form-group">
+			        {# {{ form_label(form.dosage, "Dosage", {'label_attr': {'class': 'col-sm-3 control-label'}}) }} #}
+			      	{{ form_errors(form.dosage) }}
+			        <div class="col-sm-8">
+			        	{{ form_widget(form.dosage, {'attr': {'class': 'form-control'}}) }}
+			        </div>
+			    </div>
+
+			    <div class="form-group">
+			        {# {{ form_label(form.forme, "Forme", {'label_attr': {'class': 'col-sm-3 control-label'}}) }} #}
+			     	{{ form_errors(form.forme) }}
+			      	<div class="col-sm-8">		        
+			        	{{ form_widget(form.forme, {'attr': {'class': 'form-control'}}) }}
+			      	</div>
+			    </div>
+
+			    <div class="form-group">
+			      	{# {{ form_label(form.poso, "Posologie", {'label_attr': {'class': 'col-sm-3 control-label'}}) }} #}		
+			      	{{ form_errors(form.poso) }}
+
+			      	<div class="col-sm-8">
+			           {{ form_widget(form.poso, {'attr': {'class': 'form-control'}}) }}
+			      	</div>
+			    </div> 
+
+				<div class="form-group">
+					{# {{ form_label(form.medStartHosp, "Du", {'label_attr': {'class': 'col-sm-3 control-label'}}) }} #}
+					{{ form_errors(form.medStartHosp) }}
+					<div class="col-sm-8">
+						{{ form_widget(form.medStartHosp) }}
+					</div>
+			    </div>
+
+				<div class="form-group">
+					{# {{ form_label(form.medEndHosp, "au", {'label_attr': {'class': 'col-sm-3 control-label'}}) }} #}
+					{{ form_errors(form.medEndHosp) }}
+					<div class="col-sm-8">
+						{{ form_widget(form.medEndHosp) }}
+					</div>
+			    </div>
+
+				<div class="form-group">
+					{{ form_label(form.dateMedHosp, "pas la peine", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+					{{ form_errors(form.dateMedHosp) }}
+					<div class="col-sm-8">
+						{{ form_widget(form.dateMedHosp) }}
+					</div>
+			    </div>	
+			</div> {# fin div "during" #}
+
+		</div>
+		<hr/>
+		<h4 style="padding-left:30%"><strong> CONCERTATION Médecin /Pharmacien : </strong></h4>
+		<div class = 'containeurTreatment'>
+			{# <p> test1 </p> #}
+			<div class="divergenceAndAll">
+				<div class="form-group">
+				 	{{ form_label(form.divergence, "Divergence", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+				  	{{ form_errors(form.divergence) }}
+				  	<div class="col-sm-8">	        
+				    	{{ form_widget(form.divergence, {'attr': {'class': 'form-control'}}) }}
+				    </div>
+				</div>
+
+				<div class="form-group">
+				    {{ form_label(form.divergenceType, "Type de divergence", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+				    {{ form_errors(form.divergenceType) }}
+				    <div class="col-sm-8">   
+				    	{{ form_widget(form.divergenceType, {'attr': {'class': 'form-control'}}) }}
+				 	 </div>
+				</div>
+
+				<div class="form-group">
+				    {{ form_label(form.severity, "Gravité", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+				    {{ form_errors(form.severity) }}
+				    <div class="col-sm-8">
+				 		{{ form_widget(form.severity, {'attr': {'class': 'form-control'}}) }}
+				    </div>
+				</div>	 
+
+				<div class="form-group">
+		   			{{ form_label(form.source, "Source", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+		 			{{ form_errors(form.source) }}
+			        <div class="col-sm-8">
+			            {{ form_widget(form.source, {'attr': {'class': 'form-control'}}) }}
+			        </div>  
+		        </div> 
+			</div>
+			{# <p> test2 </p> #}
+			<div class="medAndPharmaComment">
+				<div class="form-group">
+			   		{# <p>"Proposition pharmacien"</p> #}
+		       		 {{ form_label(form.proposition, "Proposition pharmacien", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+		       		 {{ form_errors(form.proposition) }}
+		       		 <div class="col-sm-8">
+		            	{{ form_widget(form.proposition, {'attr': {'class': 'form-control','rows':'4'}}) }}
+		       		 </div>
+		   		 </div>
+
+			    <div class="form-group">
+			        {{ form_label(form.comment, "Commentaire Medecin", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+			        {{ form_errors(form.comment) }}
+			        <div class="col-sm-8">
+			            {{ form_widget(form.comment, {'attr': {'class': 'form-control','rows':'4'}}) }}
+			        </div>
+			    </div>
+			</div>
+
+{# 			<div class='testTitre'>
+				<div>
+					<p> TEST1  </p>
+				</div>
+				<div>
+					<p> TEST2  </p>
+				</div>
+			</div> #}
+		</div>
+
+	</div> {# fin div "conteneur" #}
+
+    <div class="form-group" >  {# SAVE" #}
+    	<div class="col-sm-4">
+			{{ form_label(form.save) }} {{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}
+		</div>
+    </div>
+
+	{{ form_rest(form) }}
+	{{ form_end(form) }}
+</div>	
+
+	
+
+<script> // autocompletion des medoc EAAASyyyyyyyyyyyyyyy
+	var liste = Array();
+	{% for meddoc in listMedocs %}
+
+		liste.push("{{ meddoc.medoc }} ");
+
+	{% endfor %}
+
+	$('#bimobundle_medproto_nomBefore').autocomplete({   //  id=  "bimobundle_medproto_nomBefore"
+		source : liste,
+		minLength : 4
+	});
+
+	$('#bimobundle_medproto_nom').autocomplete({   //  id=  "bimobundle_medproto_nomBefore"
+		source : liste,
+		minLength : 4
+	});
+
+
+</script>
+
+<style type="text/css">
+
+.containeurMedProto
+{
+	display :flex;
+	justify-content: 	space-around;
+	flex-direction: column; 
+}
+	.containeurMedChoice:nth-child(1)
+	{
+		display :flex;
+		justify-content: 	space-around;
+		
+	}
+		.beforeHosp:nth-child(1)
+		{
+			padding: 2%;
+			flex: 	1;
+		}
+		.duringHosp:nth-child(2)
+		{
+			padding: 2%;
+			flex: 	1;
+		}
+	.containeurTreatment:nth-child(4)  /* 3 car il ya le titre avant*/
+	{
+		display :flex;
+		justify-content: 	space-around;
+		
+	}
+		.divergenceAndAll:nth-child(1)
+		{
+			padding: 2%;
+			flex: 	4;
+		}
+
+		.medAndPharmaComment:nth-child(2)
+		{
+			padding: 2%;
+			flex: 	5;
+		}
+/*
+		.testTitre:nth-child(3)
+		{
+			padding: 2%;
+			flex: 	1;
+		}*/
+
+
+
+</style>

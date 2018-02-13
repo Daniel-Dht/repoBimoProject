@@ -1,0 +1,100 @@
+
+
+{% extends "layout.html.twig" %}
+
+{% block title %}
+  Vue Patient
+{% endblock %}
+
+{% block body %}
+  <h4> Fiche Patient</h4>
+  <hr/>
+  <h2>{{patient.prenom}} {{patient.nom}}</h2>
+  <p>
+    Description : on pourrait mettre ici les dates d'entrée dans l'hoital, son nombre de Bimo totale, est-ce que son état necessite un traitement urgent etc..
+    Les liens de tous les Bimos crées !
+    <br/> 
+    Créer une entity séjour liéer en ManyToOne à Patient, si la date actuelle est dans le séjour, on peut rajouter un filtre dans la liste Patient du type, "Patient actullement hospitalisé", etc...
+  </p> 
+  <br/>
+
+  {# check si le patient est acutelement hospitalisé #}
+  {% for hosp in patient.hosps %}
+    {% if hosp.active == true %}
+      <i> Ce patient est en cours d'hospitalisation depuis le {{hosp.startDate|date('d/m/Y') }} </i>
+    {% endif %}
+  {% endfor %} 
+
+
+  <h3> Dates d'hospitalisations : </h3>
+  <p>
+    {% for hosp in patient.hosps %}
+        <li><a href="{{ path('viewHosp', {'id': hosp.id }) }}" class="hosp"> {{ hosp.startDate|date('d/m/Y') }} au {{ hosp.releaseDate|date('d/m/Y') }}</a></li>
+    {% else %}
+      <i>Pas (encore !) de date pour ce patient</i>
+    {% endfor %}
+  </p>
+
+  <p>
+    <a href="{{ path('addHosp', {'idPatient': patient.id }) }}" class="btn btn-success">
+      <i class="glyphicon glyphicon-chevron-right"></i>
+      Ajouter un séjour à l'hopital
+    </a>
+  </p>
+
+  <h3> Liste des BIMO remplis :</h3>
+  <p>
+    
+    {% for bimo in patient.bimos %}
+      <li>
+        <a href="{{ path('viewBimo', {'id': bimo.id}) }}">
+          BIMO du {{ bimo.date|date('d/m/Y') }}
+        </a>
+        (id n°{{bimo.id}})
+      </li>
+    {% else %}
+      <i>Pas (encore !) de BIMO pour ce patient</i>
+    {% endfor %}
+    
+  </p>
+
+  <p>
+    <a href="{{ path('addBimo', {'idPatient': patient.id }) }}" class="btn btn-success">
+      <i class="glyphicon glyphicon-chevron-right"></i>
+      Créer un Bimo pour {{patient.prenom}} {{patient.nom}}
+    </a>
+  </p>
+
+
+  <hr/>
+
+  {# le code suivant permet le retour à la vue bimo associée si l'on y vient #}
+  <p>
+    {% if idBimo is defined %}
+      {% if idBimo is empty %}
+        <a href="{{ path('listPatient') }}" class="btn btn-primary">
+          <i class="glyphicon glyphicon-chevron-left"></i>
+          Retour à la liste de patients
+        </a>
+      {% else %}
+        <a href="{{ path('viewBimo',{'id':idBimo}) }}" class="btn btn-primary">
+          <i class="glyphicon glyphicon-chevron-left"></i>
+          Retour au Bimo
+        </a>
+      {% endif %}
+    {% endif %}
+
+    <a href="{{ path('editPatient', {'id':patient.id}) }}" class="btn btn-warning">
+      <i class="glyphicon glyphicon-edit"></i>
+      Modifier le profil
+    </a>
+
+    <a href="{{ path('deletePatient', {'id':patient.id}) }}" class="btn btn-danger">
+      <i class="glyphicon glyphicon-trash"></i>
+      Supprimer le profil 
+    </a>
+
+  </p>
+  
+
+{% endblock %}

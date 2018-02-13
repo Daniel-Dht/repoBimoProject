@@ -1,0 +1,71 @@
+
+
+{% extends "layout.html.twig" %}
+
+{% block title %}
+  Vue Sej. Hosp.
+{% endblock %}
+
+{% block body %}
+  <h4> Fiche hospitalisation Patient</h4>
+  <hr/>
+  <h2>-{{hosp.patient.prenom}} {{hosp.patient.nom}}- Hospitalisation du {{ hosp.startDate|date('d/m/Y') }} au {{ hosp.releaseDate|date('d/m/Y') }}</h2>
+  <p>
+    Description : on pourrait mettre ici plein de truc
+    <br/>
+    Ce séjour correspond aux dates suivantes : du {{ hosp.startDate|date('d/m/Y') }} au {{ hosp.releaseDate|date('d/m/Y') }}
+  
+  </p>
+
+
+  <h3> Liste des BIMO remplis pendant l'hospitalisation:</h3>
+  <p>
+    à faire
+ {#    
+    {% for bimo in patient.bimos %}
+      <li>
+        <a href="{{ path('viewBimo', {'id': bimo.id}) }}">
+          BIMO du {{ bimo.date|date('d/m/Y') }}
+        </a>
+        (id n°{{bimo.id}})
+      </li>
+    {% else %}
+      <i>Pas (encore !) de BIMO pour ce patient</i>
+    {% endfor %} #}
+    
+  </p>
+  {% if hosp.active == true %}
+    <p>
+      <a href="{{ path('addBimo', {'idPatient': hosp.patient.id }) }}" class="btn btn-success">
+        <i class="glyphicon glyphicon-chevron-right"></i>
+        Créer un Bimo pour ce séjour
+      </a>
+    </p>
+  {% else %}
+    <i> Vous ne pouvez pas créer de BIMO sur cette période car elle a été déclaré comme terminé le {{ hosp.releaseDate|date('d/m/Y') }} </i>
+  {% endif %}
+
+
+  <hr/>
+
+  {# le code suivant permet le retour à la vue bimo associée si l'on y vient #}
+  <p>
+    <a href="{{ path('viewPatient', {'id': hosp.patient.id }) }}" class="btn btn-primary">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour 
+    </a>
+
+    <a href="#" class="btn btn-warning">
+      <i class="glyphicon glyphicon-edit"></i>
+      Modifier l'Hosp ( faire #)
+    </a>
+
+    <a href="{{ path('deleteHosp', {'id':hosp.id}) }}" class="btn btn-danger">
+      <i class="glyphicon glyphicon-trash"></i>
+      Supprimer ce séjour
+    </a>
+
+  </p>
+  
+
+{% endblock %}
