@@ -10,24 +10,25 @@
   <div class="well">
     <ul style="list-style:none;">
 
-        {% for patient in listPatient %}
+      {% for patient in listPatient %}
 
-          <li class="noDec" >
+        <li class="noDec" >
 
-            <div id='patientHover{{patient.id}}' class="patientHover" style ="padding:2px;">
-              <p id='paraHover{{patient.id}}'>
-                <a href="{{ path('viewPatient', {'id': patient.id }) }}" >
-                  {{ patient.nom | upper}} {{ patient.prenom }}
-                </a>
-                créé le {{ patient.date|date('d/m/Y') }}  (id n°{{patient.id}})
-              </p>
-            </div>
-                  
-          </li>
+          <div id='patientHover{{patient.id}}' class="patientHover" style ="padding:2px;">
+            <p id='paraHover{{patient.id}}'>
+              <a href="{{ path('viewPatient', {'id': patient.id }) }}" >
+                {{ patient.nom | upper}} {{ patient.prenom }}
+              </a>
+              créé le {{ patient.date|date('d/m/Y') }}  (id n°{{patient.id}})
+            </p>
+          </div>
+                
+        </li>
 
       {% else %}
         <li>Pas (encore !) de patients</li>
       {% endfor %}
+        
     </ul>
   </div>
 
@@ -49,10 +50,6 @@
           </a>
         </li>
   {% endif %}
-{# 
-  <div id= "testvue">
-      seed
-  </div> #}
 
     {# Génération des liens appraissants au mouseOver #}
   <script type="text/javascript">

@@ -1,0 +1,67 @@
+
+{% extends "layout.html.twig" %}
+
+{% block title %}
+  Listes des Patient - {{ parent() }}
+{% endblock %}
+{% block body %}
+
+  <h2>Liste des patients à votre charge </h2>
+
+  <div class="well">
+    <ul style="list-style:none;">
+
+      {% for patient in app.user.patients %}
+
+        <li class="noDec" >
+
+          <div class="patientHover" style ="padding:2px;">
+            <p>
+              <a href="{{ path('viewPatient', {'id': patient.id }) }}" >
+                {{ patient.nom | upper}} {{ patient.prenom }}
+              </a>
+              {# Liens cachés affichés au survol : #}
+              <a  href="{{ path('addBimo', {'idPatient': patient.id }) }}"  class="toAppear btn btn-success" >  
+                Créer un BIMO
+                <i class="glyphicon glyphicon-chevron-right"></i>
+              </a>           
+            </p>
+          </div>
+                
+        </li>
+
+      {% else %}
+        <li>Pas (encore !) de patients</li>
+      {% endfor %}
+        
+    </ul>
+  </div>
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+
+    $(".patientHover").each(function(n)
+    {
+      $(this)
+        .find('a')
+        .filter(".toAppear")
+        .hide()   
+
+      $(this).on('mouseover', function(e) {
+         $(this)
+         .find('a')
+         .filter(".toAppear")      
+         .show()
+      });
+      $(this).on('mouseleave', function(e) {
+        $(this)
+        .find('a')
+        .filter(".toAppear")
+        .hide()
+      });
+    });
+
+
+</script>
+
+{% endblock %}

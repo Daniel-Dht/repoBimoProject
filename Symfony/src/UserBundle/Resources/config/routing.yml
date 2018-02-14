@@ -39,3 +39,8 @@ AddPatientToUser:
         idUser: \d+   
         idPatient: \d+
 
+listPatientAtCharge:
+    path:      /listPatientAtCharge
+    defaults:
+        _controller: UserBundle:Security:listPatientAtCharge
+

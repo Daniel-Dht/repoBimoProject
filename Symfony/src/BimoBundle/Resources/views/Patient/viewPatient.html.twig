@@ -11,10 +11,23 @@
   <hr/>
   <h2>{{patient.prenom}} {{patient.nom}}</h2>
 
-  <a href="{{ path('AddPatientToUser', {'idPatient': patient.id,'idUser': app.user.id }) }}" class="btn btn-primary">
-    Rajouter ce Patient  à votre liste personnelle
-    <i class="glyphicon glyphicon-chevron-right"></i>
-  </a>
+
+    {# Check si le patient est déja dans la liste des partient à la charge de l'utilisateur courant #}
+    {% set break = false %}
+    {% for patientOfUser in app.user.patients if not break %}
+
+      {% if patient.id==patientOfUser.id %}
+          {% set break = true %}
+            Ce Patient est indiqué comme à votre charge !
+      {% endif %}
+
+    {% endfor %}
+    {% if break == false %}
+      <a href="{{ path('AddPatientToUser', {'idPatient': patient.id,'idUser': app.user.id }) }}" class="btn btn-primary">
+        Rajouter ce Patient  à votre liste personnelle
+        <i class="glyphicon glyphicon-chevron-right"></i>
+      </a>
+    {% endif %}
 
   <p>
     <br/>

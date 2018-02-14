@@ -194,20 +194,13 @@ class SecurityController extends Controller
       $em->persist($user);
       $em->flush();
 
-      return $this->render('UserBundle:User:viewUser.html.twig', array(
+      return $this->render('UserBundle:User:listPatientOfUser.html.twig', array(
         'user' => $user,
       ));
     }
 
-    // public function listPatientAtCharge($idUser)
-    // {
-    //   $em = $this->getDoctrine()->getManager();
-
-    //   $user =$em
-    //     ->getRepository('UserBundle:User')
-    //     ->find($idUser)
-    //   ;
-
-
-    // }
+    public function listPatientAtChargeAction()
+    {
+      return $this->render('UserBundle:User:listPatientOfUser.html.twig');
+    }
 }

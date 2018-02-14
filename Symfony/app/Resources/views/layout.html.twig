@@ -64,7 +64,7 @@
           <h4> Droits Admin : </h4>
             <li><a href="{{path('addBimo')}}">Ajouter une BIMO</a></li>
             <li><a href="{{path('addPatient') }}">Ajouter un patient</a></li>
-             <li><a href="#">Patients à charge</a></li>
+             <li><a href="{{path('listPatientAtCharge') }}">Patients à charge</a></li>
         {% endif %}
         {% if is_granted('ROLE_SUPER_ADMIN') %}
             <h4> Droits Admin Superieur : </h4>
