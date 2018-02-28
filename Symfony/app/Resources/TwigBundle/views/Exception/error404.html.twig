@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="{{ _charset }}" />
+        <title>An Error Occurred: {{ status_text }}</title>
+    </head>
+
+
+    <body id="bodyError" style = "background-image:url({{ asset('images/back10.JPG') }});background-repeat:no-repeat;background-size:100%;background-attachment:fixed;padding-left:10%;">
+  
+  
+        <div class="jeanmi">
+            <div id="header" class="jumbotron" style="border-radius:0px 23px 80px 23px;width:65%;">
+              <h2>Bimo Platform 2.0</h2>
+              <i>
+                Projet en cours de developpement 
+              </i>
+            </div>
+        </div>
+
+        <h1>Oops! An Error Occurred </h1>
+        <h2>The server returned a "{{ status_code }} {{ status_text }}".</h2>
+
+        <div>
+            Something is broken. Please let us know what you were doing when this error occurred.
+            We will fix it as soon as possible. Sorry for any inconvenience caused.
+        </div>
+    </body>
+</html>

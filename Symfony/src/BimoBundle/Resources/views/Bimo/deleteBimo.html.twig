@@ -15,7 +15,7 @@
     </p>
 
     {# On met l'id de l'annonce dans la route de l'action du formulaire #}
-    <form action="{{ path('deleteBimo', {'id': bimo.id}) }}" method="post">
+    <form action="{{ path('deleteBimo', {'bimo_id': bimo.id}) }}" method="post">
       <a href="{{ path('viewBimo', {'id': bimo.id}) }}" class="btn btn-default">
         <i class="glyphicon glyphicon-chevron-left"></i>
         Retour au BIMO</a>

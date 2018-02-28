@@ -82,11 +82,11 @@ viewBimo:
         id: \d+
 
 pdfBimo:
-    path:      /pdfBimo/{id}
+    path:      /pdfBimo/{bimo_id}
     defaults:
         _controller: BimoBundle:Bimo:PDF
     requirements:
-        id: \d+
+        bimo_id: \d+
 
 test:
     path:      /test
@@ -101,11 +101,11 @@ editBimo:
         id: \d+
 
 deleteBimo:
-    path:      /deleteBimo/{id}
+    path:      /deleteBimo/{bimo_id}
     defaults:
         _controller: BimoBundle:Bimo:deleteBimo
     requirements:
-        id: \d+
+        bimo_id: \d+
 
 
 viewPatient:

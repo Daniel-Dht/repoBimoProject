@@ -1,31 +1,29 @@
 
 <div class="well">
   <legend style="text-align: center;">Création d'un BIMO</legend>
-{# 	{{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
-  {{ form_errors(form) }} #}
-  {% macro tagCollectionItem(formData) %}
-    <div class="dosage">{{ form_widget(formData.dosage) }}</div>
-    <div class="forme">{{ form_errors(formDate.forme) }}</div>
-  {% endmacro %}
 
 {{ form_start(form)}}
 
-  {{ form_row(form.patient) }}
   {{ form_row(form.urgency, {'label':'Ce BIMO necessite un traitement urgent'}) }}
 
+  {# {{ form_widget(form.medProtos.vars.prototype.nom)|e }} #}
+  
+{# {{ form_widget(form.tags.vars.prototype.name)|e }} #}
+  {# {{ form_end(form, {'render_rest': false}) }}  #}
+  {# {{ form_end(form) }}  #}
 
-  <ul class="tags" data-prototype="{{ form_widget(form.medProtos.vars.prototype)|e }}">
-    {% for medProto in form.medProtos %}
-      <li> {{ form_row(medProto.nom) }} </li>
-    {% endfor %}
-  </ul>
-
-
-  {# {{ form_widget(form) }} #}
-  {# {{ form_end(form, {'render_rest': false}) }} #}
-  {{ form_row(form.save) }}
-  {{ form_end(form) }}
+<div id='site_medProtos' data-prototype="{% filter escape %}{% include 'BimoBundle:Bimo:formMedProto.html.twig' with {'form': form.medProtos.vars.prototype} %}{% endfilter %}">
+  {% for medProto in form.medProtos %}
+      {% include 'BimoBundle:Bimo:formMedProto.html.twig' with {'form': medProto} %}
+  {% endfor %}
 </div>
+
+  {{ form_widget(form) }}
+  {{ form_end(form, {'render_rest': false}) }}
+
+  {# {{ form_end(form) }} #}
+</div>
+
 
 
 

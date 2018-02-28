@@ -16,15 +16,18 @@
         <li class="noDec" >
 
           <div class="patientHover" style ="padding:2px;">
+            
             <p>
               <a href="{{ path('viewPatient', {'id': patient.id }) }}" >
                 {{ patient.nom | upper}} {{ patient.prenom }}
               </a>
+
               {# Liens cachés affichés au survol : #}
               <a  href="{{ path('addBimo', {'idPatient': patient.id }) }}"  class="toAppear btn btn-success" >  
-                Créer un BIMO
+                   Créer un BIMO
                 <i class="glyphicon glyphicon-chevron-right"></i>
-              </a>           
+              </a>
+
             </p>
           </div>
                 
@@ -37,8 +40,12 @@
     </ul>
   </div>
 
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <div id="dropezone">au revoir </div>
+
 <script>
+    
+    var id = $("#dropezone").text();
+    console.log(id);
 
     $(".patientHover").each(function(n)
     {
@@ -59,8 +66,10 @@
         .filter(".toAppear")
         .hide()
       });
+      $(this).on('click', function(e) {
+       // window.location = "/repoBimo/Symfony/web/app_dev.php/viewPatient/"+43+"";
+      });
     });
-
 
 </script>
 

@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
 use BimoBundle\Entity\MedProto;
 use BimoBundle\Entity\Patient;
 use BimoBundle\Entity\Bimo;
@@ -171,16 +173,26 @@ public function EditMedProtoAction(Request $request, $id)
 				'id' => $bimo->getId(),
 			));
 	    }
+	    $em = $this->getDoctrine() // On va chercher la liste des medoc !
+            ->getManager()
+            ->getRepository('BimoBundle:Medicaments')
+        ;
+        $listMedocs = $em->findAll() ;
 	    //Renvoie le formulaire d'un bimo permettant de choisir le patient associé
 	    if (empty($patient)) {
+
+
 	    	return $this->render('BimoBundle:Bimo:addBimo.html.twig', array(
 		      'form' => $form->createView(),
+	     	  'listMedocs' => $listMedocs,
 	    	));
 	    }
+
 	    //Renvoie le formulaire d'un bimo accocié à $patient
 	    return $this->render('BimoBundle:Bimo:addBimo.html.twig', array(
 	      'form' => $form->createView(),
 	      'patient' => $patient,
+	      'listMedocs' => $listMedocs,
 	    ));
 
     }
@@ -223,17 +235,12 @@ public function EditMedProtoAction(Request $request, $id)
 	    ));
 
 	}
-	public function deleteBimoAction(Request $request, $id)
+
+	/**
+	 * @ParamConverter("bimo", options={"mapping": {"bimo_id": "id"}})
+	 */
+	public function deleteBimoAction(Request $request, Bimo $bimo)
   	{
-	    $em = $this->getDoctrine()->getManager();
-
-	    $bimo = $em
-	    	->getRepository('BimoBundle:Bimo')
-	    	->find($id);
-
-	    if (null === $bimo) {
-	      throw new NotFoundHttpException("Le Bimo d'id ".$id." n'existe pas.");
-	    }
 	    // On crée un formulaire vide, qui ne contiendra que le champ CSRF
 	    // Cela permet de protéger la suppression d'annonce contre cette faille
 	    $form = $this->get('form.factory')->create();
@@ -266,18 +273,8 @@ public function EditMedProtoAction(Request $request, $id)
 
     }
 
-    public function viewBimoAction($id)
+    public function viewBimoAction(Bimo $bimo)
     {
-	    $em = $this->getDoctrine()
-	      ->getManager()
-	      ->getRepository('BimoBundle:Bimo')
-	    ;
-
-	    $bimo = $em->find($id);
-
-	    if (null === $bimo) {
-	      throw new NotFoundHttpException("La BIMO d'id ".$id." n'existe pas.");
-    	}
 
     	$listMedProto =$em = $this->getDoctrine()
 	      ->getManager()
@@ -352,21 +349,11 @@ public function EditMedProtoAction(Request $request, $id)
 	    ));
 	}
 
-
-
-	public function PDFAction($id)
+	/**
+	 * @ParamConverter("bimo", options={"mapping": {"bimo_id": "id"}})
+	 */
+	public function PDFAction(Bimo $bimo)
     {
-	    $em = $this->getDoctrine()
-	      ->getManager()
-	      ->getRepository('BimoBundle:Bimo')
-	    ;
-
-	    $bimo = $em->find($id);
-
-	    if (null === $bimo) {
-	      throw new NotFoundHttpException("La BIMO d'id ".$id." n'existe pas.");
-    	}
-
     	$listMedProto =$em = $this->getDoctrine()
 	      ->getManager()
 	      ->getRepository('BimoBundle:MedProto')

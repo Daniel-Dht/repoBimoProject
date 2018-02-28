@@ -10,7 +10,7 @@
 
   <h2>Fiche BIMO </h2>
 
-    <a href="{{ path('pdfBimo', {'id': bimo.id} ) }}" style="background-color:rgb(76,174,76);border-color:rgb(76,174,76);" class="btn btn-warning">
+    <a href="{{ path('pdfBimo', {'bimo_id': bimo.id} ) }}" style="background-color:rgb(76,174,76);border-color:rgb(76,174,76);" class="btn btn-warning">
       <i class="glyphicon glyphicon-chevron-left"></i>
       Extraire sous Format PDF
       <i class="glyphicon glyphicon-chevron-right"></i>
@@ -141,7 +141,7 @@
       <i class="glyphicon glyphicon-edit"></i>
       Modifier la Bimo
     </a>
-    <a href="{{ path('deleteBimo', {'id': bimo.id} ) }}" class="btn btn-danger">
+    <a href="{{ path('deleteBimo', {'bimo_id': bimo.id} ) }}" class="btn btn-danger">
       <i class="glyphicon glyphicon-trash"></i>
       Supprimer la Bimo
     </a>

@@ -48,14 +48,13 @@ class MedProtoType extends AbstractType
             ->add('source',         TextType::class)
             ->add('divergenceType', TextType::class)
             ->add('severity',       TextType::class)
-            //->add('date',           DateTimeType::class)
+            
             ->add('proposition',    TextareaType::class)
-            ->add('comment',        TextareaType::class)
-            //->add('patient');
+            ->add('comment',        TextareaType::class)           
 
             ->add('medStartBefore', DateType::class)
             ->add('medEndBefore',   DateType::class)
-            ->add('dateMedBefore',  CheckboxType::class, array('required' => false, 'label'=>'Les dates de prise sont inconnus'))
+            ->add('dateMedBefore',  CheckboxType::class, array('required' => false, 'label'=>'Les dates de prise sont inconnues'))
 
             ->add('medStartHosp',   DateType::class)
             ->add('medEndHosp',     DateType::class)
