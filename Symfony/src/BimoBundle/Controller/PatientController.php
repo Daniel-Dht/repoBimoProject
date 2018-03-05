@@ -31,8 +31,8 @@ class PatientController extends Controller
 
  		$form->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid()) 
-	    {
+    	if ($form->isSubmitted() && $form->isValid()) 
+	   	 {
 	    		
 			// $nouveauNom = $form["prenom"]->getData();
 			// $patient->setNom($nouveauNom);
@@ -56,10 +56,11 @@ class PatientController extends Controller
 	    ));
 
     }
+
     public function EditAction($id, Request $request)
     {
     	
- 	$patient = $this
+ 		$patient = $this
 	    	->getDoctrine()
 	      	->getManager()
 	      	->getRepository('BimoBundle:Patient')

@@ -731,4 +731,6 @@ class MedProto
     {
         return $this->dateMedHosp;
     }
+
+    
 }

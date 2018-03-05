@@ -47,6 +47,14 @@ class BimoController extends Controller
 	    if ($request->isMethod('POST') &&
 	    	$form->handleRequest($request)->isValid()) 
 	    {
+
+	    	$texte = $form->get('dosage')->getdata();
+		    if (preg_match("#^[0-9][-._/,;:* ]?[0-9][-._/,;:* ]?[0-9]$#", $texte))
+		    {
+		      $texte = preg_replace('#^([0-9])[-._/,;:* ]?([0-9])[-._/,;:* ]?([0-9])$#', 'matin : $1 midi : $2 soir : $3', $texte);
+		    }
+	    	$medProto->setDosage($texte);
+
 	    	$bimo->addMedProto($medProto);
 
 			$em = $this->getDoctrine()->getManager();
@@ -76,7 +84,7 @@ class BimoController extends Controller
 
     }
 
-public function EditMedProtoAction(Request $request, $id)
+	public function EditMedProtoAction(Request $request, $id)
     {
 
 	    $medProto = $this
@@ -103,6 +111,18 @@ public function EditMedProtoAction(Request $request, $id)
 	    if ($request->isMethod('POST') &&
 	    	$form->handleRequest($request)->isValid()) 
 	    {
+	    	$emDos = $this->getDoctrine()
+				->getManager()
+				->getRepository('BimoBundle:MedProto');
+
+	    	$texteDosage = $form->get('dosage')->getdata();
+			$texteDosage = $emDos->dosageExpression($texteDosage);
+	    	$medProto->setDosage($texteDosage);
+
+
+	    	$texteDosageBefore = $form->get('dosageBefore')->getdata();
+			$texteDosageBefore = $emDos->dosageExpression($texteDosageBefore);
+	    	$medProto->setDosageBefore($texteDosageBefore);
 
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($medProto);

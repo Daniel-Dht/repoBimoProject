@@ -17,17 +17,16 @@
     </a>
 
   <hr />
-  <p>
-    Patient : <strong>{{bimo.patient.prenom}} {{bimo.patient.nom}} </strong>
 
+  <p>
     <a class="btn btn-primary" href="{{ path('viewPatient', {'id': bimo.patient.id, 'idBimo': bimo.id }) }}">
       <i class="glyphicon glyphicon-chevron-right"></i>
-    Voir le profil
+    <strong>{{bimo.patient.prenom}} {{bimo.patient.nom}} </strong> <i>voir le profil</i>
     </a>
-
-    <br/>
-    Date de Création : {{bimo.date|date('d/m/Y')}}
   </p> 
+
+  <br/>
+  <i>Date de création du bimo: {{bimo.date|date('d/m/Y')}}</i>
   <br/>
 
 
@@ -79,7 +78,7 @@
         </tr>
         <tr id='medProto{{medProto.id}}' > 
 
-          <td colspan="4" class="borderR">
+          <td colspan="4" class="borderR" >
             <i>
               {% if not medProto.dateMedBefore %}
                   Prise : du {{medProto.medStartBefore|date('d/m/Y')}} au {{medProto.medEndBefore|date('d/m/Y')}}

@@ -18,7 +18,11 @@
 
       {% if patient.id==patientOfUser.id %}
           {% set break = true %}
-           <i>Ce Patient est indiqué comme étant à votre charge </i>
+           <i>Ce Patient est indiqué comme étant à votre charge, </i>
+            <a href="{{ path('removePatientFromUser', {'patient_id': patient.id,'user_id': app.user.id }) }}" class="btn btn-primary">
+               Retirer ce patient de votre liste personnelle
+              <i class="glyphicon glyphicon-chevron-right"></i>
+            </a>
       {% endif %}
 
     {% endfor %}

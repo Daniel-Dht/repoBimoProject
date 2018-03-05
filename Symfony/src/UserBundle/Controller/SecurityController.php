@@ -7,7 +7,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException; 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter; 
 
 use UserBundle\Form\UserType ;
 use UserBundle\Form\UserEditType ;
@@ -100,20 +102,17 @@ class SecurityController extends Controller
 
       if ($request->isMethod('POST') &&
         $form->handleRequest($request)->isValid()) 
+        {
 
-      {
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
 
-      $em = $this->getDoctrine()->getManager();
-      $em->persist($user);
-      $em->flush();
+        $request->getSession()->getFlashBag()->add('notice', 'user bien enregistrée.');
 
-      $request->getSession()->getFlashBag()->add('notice', 'user bien enregistrée.');
-
-      return $this->render('UserBundle:User:viewUser.html.twig', array(
-            'user' => $user,
-        ));
-
-        // , array('id' => $user->getId()));
+        return $this->render('UserBundle:User:viewUser.html.twig', array(
+              'user' => $user,
+          ));
       }
 
       return $this->render('UserBundle:User:addUser.html.twig', array(
@@ -121,25 +120,25 @@ class SecurityController extends Controller
       ));
     }
 
-    public function viewUserAction($id)
-    {
-      $em = $this->getDoctrine()
-        ->getManager()
-        ->getRepository('UserBundle:User')
-      ;
+  public function viewUserAction($id)
+  {
+    $em = $this->getDoctrine()
+      ->getManager()
+      ->getRepository('UserBundle:User')
+    ;
 
-      $user = $em->find($id);
+    $user = $em->find($id);
 
-      if (null === $user) {
-        throw new NotFoundHttpException("L'utilisateur d'id ".$id." n'existe pas.");
-      }
-
-      // Le render ne change pas, on passait avant un tableau, maintenant un objet
-      return $this->render('UserBundle:User:viewUser.html.twig', array(
-        'user' => $user,
-        // 'listBimo' => $listBimo,
-      ));
+    if (null === $user) {
+      throw new NotFoundHttpException("L'utilisateur d'id ".$id." n'existe pas.");
     }
+
+    // Le render ne change pas, on passait avant un tableau, maintenant un objet
+    return $this->render('UserBundle:User:viewUser.html.twig', array(
+      'user' => $user,
+    ));
+   }
+
     public function EditUserAction($id, Request $request)
     {
       
@@ -199,7 +198,24 @@ class SecurityController extends Controller
       ));
     }
 
-    public function listPatientAtChargeAction()
+  /**
+   * @ParamConverter("user", options={"mapping": {"user_id": "id"}})
+   * @ParamConverter("patient", options={"mapping": {"patient_id": "id"}})
+   */
+  public function removePatientFromUserAction(User $user,  \BimoBundle\Entity\Patient $patient)
+    {
+      $user->removePatient($patient);
+      $em = $this->getDoctrine()->getManager();
+      $em->persist($user);
+      $em->flush();
+
+      return $this->render('UserBundle:User:listPatientOfUser.html.twig', array(
+        'user' => $user,
+      ));
+    }
+
+
+  public function listPatientAtChargeAction()
     {
       return $this->render('UserBundle:User:listPatientOfUser.html.twig');
     }

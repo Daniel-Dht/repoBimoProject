@@ -10,4 +10,12 @@ namespace BimoBundle\Repository;
  */
 class MedProtoRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function dosageExpression($texte)
+    {
+    	if (preg_match("#^[0-9][-._/,;:* ]?[0-9][-._/,;:* ]?[0-9]$#", $texte))
+		{
+		    $texte = preg_replace('#^([0-9])[-._/,;:* ]?([0-9])[-._/,;:* ]?([0-9])$#', 'matin : $1 midi : $2 soir : $3', $texte);	    
+		}
+		return $texte;
+    }
 }

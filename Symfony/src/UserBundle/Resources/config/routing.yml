@@ -39,6 +39,14 @@ AddPatientToUser:
         idUser: \d+   
         idPatient: \d+
 
+removePatientFromUser:
+    path:      /removePatientFromUser/{user_id}/{patient_id}
+    defaults:
+        _controller: UserBundle:Security:removePatientFromUser
+    requirements:
+        user_id: \d+
+        patient_id: \d+
+
 listPatientAtCharge:
     path:      /listPatientAtCharge
     defaults:
