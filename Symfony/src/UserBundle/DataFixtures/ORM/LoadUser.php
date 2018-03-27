@@ -21,7 +21,9 @@ class LoadUser implements FixtureInterface
 
       // Le nom d'utilisateur et le mot de passe sont identiques pour l'instant
       $user->setUsername($name);
-      $user->setPassword($name);
+      $encoder = $this->get('security.password_encoder');
+      $password = $encoder->encodePassword($user, $name);
+      $user->setPassword($password);
 
       // On ne se sert pas du sel pour l'instant
       $user->setSalt('');

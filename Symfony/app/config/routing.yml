@@ -3,6 +3,11 @@ bimo2:
     type:     annotation
     prefix:   /
 
+user1:
+    resource: "@UserBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 bimo:
     resource: "@BimoBundle/Resources/config/routing.yml"
     prefix:   /
@@ -11,9 +16,9 @@ user:
     resource: "@UserBundle/Resources/config/routing.yml"
     prefix:   /
 
-app:
-    resource: "@AppBundle/config/routing.yml"
-    prefix:   /
+# app:
+#     resource: "@AppBundle/config/routing.yml"
+#     prefix:   /
 
 
 

@@ -30,6 +30,41 @@ class PatientType extends AbstractType
                 'attr' => array(
                 'placeholder' => 'Eric'
             )))
+            ->add('birthDay',   TextType::class, array(
+                'required' => false,
+                'attr' => array(
+                'placeholder' => '25/07/1987'
+            )))
+            ->add('adress',   TextType::class, array(
+                'required' => false,
+                'attr' => array(
+                'placeholder' => ' '
+            )))
+            ->add('phoneNumber',   TextType::class, array(
+                'required' => false,
+                'attr' => array(
+                'placeholder' => '06 44 10 32 41'
+            )))
+            ->add('socialSecurityNumber',   TextType::class, array(
+                'required' => false,
+                'attr' => array(
+                'placeholder' => '00645489131'
+            )))
+            ->add('mail',   TextType::class, array(
+                'required' => false,
+                'attr' => array(
+                'placeholder' => ''
+            )))
+            ->add('doctor',   TextType::class, array(
+                'required' => false,
+                'attr' => array(
+                'placeholder' => ''
+            )))
+            ->add('bloodGroup',   TextType::class, array(
+                'required' => false,
+                'attr' => array(
+                'placeholder' => ''
+            )))
             ->add('save',     SubmitType::class)
         ;
     }

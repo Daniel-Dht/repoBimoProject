@@ -56,49 +56,49 @@ class Patient
     /**
      * @var string
      *
-     * @ORM\Column(name="birthDay", type="string", length=255, nullable = true)
+     * @ORM\Column(name="birthDay", type="string", length=255)
      */
     private $birthDay;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="adress", type="string", length=255, nullable = true)
+     * @ORM\Column(name="adress", type="string", length=255)
      */
     private $adress;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="phoneNumber", type="string", length=255, nullable = true)
+     * @ORM\Column(name="phoneNumber", type="string", length=255)
      */
     private $phoneNumber;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="socialSecurityNumber", type="string", length=255, nullable = true)
+     * @ORM\Column(name="socialSecurityNumber", type="string", length=255)
      */
     private $socialSecurityNumber;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="mail", type="string", length=255, nullable = true)
+     * @ORM\Column(name="mail", type="string", length=255)
      */
     private $mail;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="doctor", type="string", length=255, nullable = true)
+     * @ORM\Column(name="doctor", type="string", length=255)
      */
     private $doctor;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="bloodGroup", type="string", length=255, nullable = true)
+     * @ORM\Column(name="bloodGroup", type="string", length=255)
      */
     private $bloodGroup;
 
@@ -357,77 +357,5 @@ class Patient
     public function getSocialSecurityNumber()
     {
         return $this->socialSecurityNumber;
-    }
-
-    /**
-     * Set mail.
-     *
-     * @param string $mail
-     *
-     * @return Patient
-     */
-    public function setMail($mail)
-    {
-        $this->mail = $mail;
-
-        return $this;
-    }
-
-    /**
-     * Get mail.
-     *
-     * @return string
-     */
-    public function getMail()
-    {
-        return $this->mail;
-    }
-
-    /**
-     * Set doctor.
-     *
-     * @param string $doctor
-     *
-     * @return Patient
-     */
-    public function setDoctor($doctor)
-    {
-        $this->doctor = $doctor;
-
-        return $this;
-    }
-
-    /**
-     * Get doctor.
-     *
-     * @return string
-     */
-    public function getDoctor()
-    {
-        return $this->doctor;
-    }
-
-    /**
-     * Set bloodGroup.
-     *
-     * @param string $bloodGroup
-     *
-     * @return Patient
-     */
-    public function setBloodGroup($bloodGroup)
-    {
-        $this->bloodGroup = $bloodGroup;
-
-        return $this;
-    }
-
-    /**
-     * Get bloodGroup.
-     *
-     * @return string
-     */
-    public function getBloodGroup()
-    {
-        return $this->bloodGroup;
     }
 }

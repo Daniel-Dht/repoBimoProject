@@ -1,5 +1,6 @@
 
 
+
 {% extends "layout.html.twig" %}
 
 {% block title %}
@@ -40,7 +41,7 @@
         <th colspan="5"><strong>CONCERTATION Médecin /Pharmacien :</strong></th>
       </tr>
       <tr> 
-        <th class="borderR"><strong>Sources </strong></th>
+        <th class="b orderR"><strong>Sources </strong></th>
         <th><strong>Medicament </strong></th>
         <th><strong>Dosage </strong></th>
         <th><strong>Forme </strong></th>
@@ -73,8 +74,8 @@
           <td rowspan="2">{{medProto.divergence}}</td>
           <td rowspan="2">{{medProto.divergenceType}}</td>
           <td rowspan="2" >{{medProto.severity}}</td>    
-          <td rowspan="2" class='propCom'style="min-width: 250px;max-width: 250px;word-wrap: break-word;">{{medProto.proposition}}</td>
-          <td rowspan="2" class='propCom' style="min-width: 250px;max-width: 250px;word-wrap: break-word;">{{medProto.comment}}</td>
+          <td rowspan="2" class='propCom'style="min-width: 200px;max-width: 200px;word-wrap: break-word;">{{medProto.proposition}}</td>
+          <td rowspan="2" class='propCom' style="min-width: 200px;max-width: 200px;word-wrap: break-word;">{{medProto.comment}}</td>
         </tr>
         <tr id='medProto{{medProto.id}}' > 
 
