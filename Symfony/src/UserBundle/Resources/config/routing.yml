@@ -52,3 +52,9 @@ listPatientAtCharge:
     defaults:
         _controller: UserBundle:Security:listPatientAtCharge
 
+ownProfile:
+    path:      /ownProfile/{$id}
+    defaults:
+        _controller: UserBundle:Security:ownProfile
+    requirements:
+        id: \d+

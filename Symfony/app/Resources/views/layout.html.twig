@@ -5,85 +5,117 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>{% block title %}Bimo Platform {% endblock %}</title>
 
   {% block stylesheets %}
     {# On charge le CSS de bootstrap depuis le site directement #}
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    {# <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"> #}
     
     <link rel="stylesheet" href="{{ asset('css/testY.css') }}">
-    {# <link rel="stylesheet" href="/Symfony/web/css/testY.css" type="text/css" /> #}
-    {# <link rel="stylesheet" href="/Symfony/src/BimoBundle/Resources/public/css/test4.css" type="text/css" /> #}
-    {# autocompletion mator : #}
  
+    {#autocompletion mator : #}
+ 
+    
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/logo.png') }}" />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/logo.png') }}" />
 
   {% endblock %}
+
 </head>
 
-<body style = "background-image:url({{ asset('images/back10.JPG') }});background-repeat:no-repeat;background-size:100%;background-attachment:fixed;">
+<body style = "padding-left:15%;padding-top:50px;background-image:url({{ asset('images/back10.JPG') }});background-repeat:no-repeat;background-size:100%;background-attachment:fixed;">
   
-  
-  <div class="jeanmi">
-    <div id="header" class="jumbotron" style="border-radius:0px 23px 80px 23px;width:65%;">
-      <h1>Bimo Platform 2.0</h1>
-      <i>
-        Projet en cours de developpement 
-      </i>
-      <p>
-        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-          - Connecté en tant que {{ app.user.username }} -
+  <style type="text/css">
+    .bs-example{
+        margin: 20px;
+    }
+  </style>
 
-        {% endif %}
-      </p>
-    </div>
+ <div class="bs-example">
+    <nav id="myNavbar" class="navbar navbar-default" role="navigation" >
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" >
+                    <span class="sr-only" style="color: blue;">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Platform Bimo</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ path('home')}}">Accueil</a></li>
+                    
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">Patient <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path('listPatient') }}">Liste de patient</a></li>                           
+                            <li><a href="{{path('listPatientAtCharge') }}">Patients à charge</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{{path('addPatient') }}">Ajouter un patient</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">Bimo <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path('listBimo') }}">Derniers BIMO remplis</a></li>
+                            <li><a href="{{ path('urgentListBimo') }}">Dossier urgents</a></li>
+                            <li><a href="{{path('listPatientAtCharge') }}">Patients à charge</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{{path('addBimo')}}">Ajouter une BIMO</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                  {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">Admin <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path('listUser') }}">Gestion du personnel</a></li>
+                            <li><a href="{{ path('addUser') }}">Ajouter un utilisateur</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Settings</a></li>
+                        </ul>
+                    </li>
+                  {% endif %}
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                      <li><a href="{{ path('viewUser', {'id': app.user.id }) }}">{{ app.user.username }} - Profile</a></li>
+                      <li><a href="{{ path('logout') }}">Logout</a></li>
+                    {% else %}
+                      <li><a href="{{ path('login') }}">Login</a></li>
+                      <li><a href="{{ path('register') }}">Register</a></li>
+                    {% endif %}
+                </ul>
+              
+            </div><!-- /.navbar-collapse -->
+        </div>
+    </nav>
+</div>
+
+
 {#     <div>
         <img src="{{ asset('images/logo.jpg') }}" alt='logo hopital' />
-    </div> #}
-  </div>
-
-  <div class='container' >
-  <div class="row">
-    <div id="menu" class="col-md-3">
-      {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-      <h3>Menu :</h3>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="{{ path('home')}}">Accueil</a></li>
-        {% if app.user.username is defined %}
-          <li><a href="{{ path('logout') }}">Logout</a></li>
-        {% else %}
-          <li><a href="{{ path('login') }}">Login</a></li>
-        {% endif %}   
-        <li><a href="{{ path('listPatient') }}">Liste de patient</a></li>
-        
-        <li><a href="{{ path('listBimo') }}">Derniers BIMO remplis</a></li>
-        <li><a href="{{ path('urgentListBimo') }}">Dossier urgents</a></li>
-        {% if is_granted('ROLE_ADMIN') %}
-          <h4> Droits Admin : </h4>
-            <li><a href="{{path('addBimo')}}">Ajouter une BIMO</a></li>
-            <li><a href="{{path('addPatient') }}">Ajouter un patient</a></li>
-             <li><a href="{{path('listPatientAtCharge') }}">Patients à charge</a></li>
-        {% endif %}
-        {% if is_granted('ROLE_SUPER_ADMIN') %}
-            <h4> Droits Admin Superieur : </h4>
-              <li><a href="{{ path('listUser') }}">Gestion du personnel</a></li>
-              <li><a href="{{ path('addUser') }}">Ajouter un utilisateur</a></li>
-        {% endif %}
-      </ul>
-      {% endif %}
-
     </div>
-    <div id="content" class="col-md-9">
-      {% block body %}
-      {% endblock %}
-    </div>
+  {# </div> #}
 
-  </div>
+
+  <div id="content" class="col-md-9">
+    {% block body %}
+    {% endblock %}
   </div>
 
  
@@ -93,15 +125,11 @@
   </footer>
 
 
-  {% block javascripts %}
-    {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-  {% endblock %}
-
 </body>
 
 <style> 
 
 </style>
+
+
 </html>

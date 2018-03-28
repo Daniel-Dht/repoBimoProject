@@ -28,4 +28,16 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
 	    // (n'oubliez pas le use correspondant en début de fichier)
 	    return new Paginator($query, true);
 	}
+
+
+	public function getUser($id)
+  	{
+	    $query = $this
+	    	->createQueryBuilder('u')
+	    	->where('u.id = $id')
+	    ;
+	    return $query;
+    
+	}
+
 }

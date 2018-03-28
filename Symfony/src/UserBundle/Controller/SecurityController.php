@@ -39,11 +39,6 @@ class SecurityController extends Controller
 
 
 
-
-
-
-
-
   public function indexAction(Request $request)
   {
     // replace this example code with whatever you need
@@ -57,7 +52,7 @@ class SecurityController extends Controller
   }
 
 
-
+/// ******************************************//
   public function listAction($page)
   {
       if ($page < 1) {
@@ -203,21 +198,34 @@ class SecurityController extends Controller
    * @ParamConverter("patient", options={"mapping": {"patient_id": "id"}})
    */
   public function removePatientFromUserAction(User $user,  \BimoBundle\Entity\Patient $patient)
-    {
-      $user->removePatient($patient);
-      $em = $this->getDoctrine()->getManager();
-      $em->persist($user);
-      $em->flush();
+  {
+    $user->removePatient($patient);
+    $em = $this->getDoctrine()->getManager();
+    $em->persist($user);
+    $em->flush();
 
-      return $this->render('UserBundle:User:listPatientOfUser.html.twig', array(
-        'user' => $user,
-      ));
-    }
+    return $this->render('UserBundle:User:listPatientOfUser.html.twig', array(
+      'user' => $user,
+    ));
+  }
 
 
   public function listPatientAtChargeAction()
-    {
-      return $this->render('UserBundle:User:listPatientOfUser.html.twig');
-    }
+  {
+    return $this->render('UserBundle:User:listPatientOfUser.html.twig');
+  }
+
+  public function ownProfileAction($username)
+  {
+    $user =$em
+        ->getRepository('UserBundle:User')
+        ->getUser($username)
+    ;
+    return $this->render('UserBundle:User:viewUser.html.twig', array(
+      'user' => $user,
+    ));
+  }
+
+  
 }
 
