@@ -9,25 +9,19 @@
 
 {% block body %}
 
-  <h2>Fiche BIMO </h2>
-
-    <a href="{{ path('pdfBimo', {'bimo_id': bimo.id} ) }}" style="background-color:rgb(76,174,76);border-color:rgb(76,174,76);" class="btn btn-warning">
-      <i class="glyphicon glyphicon-chevron-left"></i>
-      Extraire sous Format PDF
-      <i class="glyphicon glyphicon-chevron-right"></i>
-    </a>
+  <h2>{{bimo.patient.prenom}} {{bimo.patient.nom}} - Fiche BIMO </h2>
 
   <hr />
 
   <p>
     <a class="btn btn-primary" href="{{ path('viewPatient', {'id': bimo.patient.id, 'idBimo': bimo.id }) }}">
-      <i class="glyphicon glyphicon-chevron-right"></i>
-    <strong>{{bimo.patient.prenom}} {{bimo.patient.nom}} </strong> <i>voir le profil</i>
+      <i class="glyphicon glyphicon-eye-open"></i>
+     <i>voir le profil de <strong>{{bimo.patient.prenom}} {{bimo.patient.nom}} </strong></i>
     </a>
   </p> 
 
   <br/>
-  <i>Date de création du bimo: {{bimo.date|date('d/m/Y')}}</i>
+  <i>Date de création du bimo: {{bimo.date|date('d/m/Y')}}, dernière modification: {{bimo.updatedAt|date('d/m/Y H:i:s')}} </i>
   <br/>
 
 
@@ -35,13 +29,12 @@
     <thead>
 
       <tr>
-        <th class="borderR"><strong></strong></th>
-        <th class="borderR" colspan="4"><strong>Traitement HABITUEL AVANT hospitalisation :</strong></th>
-        <th class="borderR" colspan="4"><strong>TRAITEMENT HOSPITALISATION :</strong></th>
-        <th colspan="5"><strong>CONCERTATION Médecin /Pharmacien :</strong></th>
+        <th class="borderR" colspan="5"style="text-align:center;"><strong>Traitement HABITUEL AVANT hospitalisation :</strong></th>
+        <th class="borderR" colspan="4"style="text-align:center;"><strong>TRAITEMENT HOSPITALISATION :</strong></th>
+        <th colspan="5"style="text-align:center;"><strong>CONCERTATION Médecin /Pharmacien :</strong></th>
       </tr>
-      <tr> 
-        <th class="b orderR"><strong>Sources </strong></th>
+      <tr class="borderB" > 
+        <th class="borderR "><strong>Sources </strong></th>
         <th><strong>Medicament </strong></th>
         <th><strong>Dosage </strong></th>
         <th><strong>Forme </strong></th>
@@ -61,69 +54,51 @@
 
       {% for medProto in bimo.medProtos %}
 
-        <tr id='medProto{{medProto.id}}' > 
-          <td rowspan="2" class="borderR">{{medProto.source}}</td>
+        <tr id='medProto{{medProto.id}}'class="lineColorMouseOut" > 
+          <td rowspan="2" class="borderR borderB">{{medProto.source}}</td>
           <td>{{medProto.nomBefore}}</td>
-          <td>{{medProto.dosageBefore}}</td>
+          <td>{{medProto.dosageBefore|nl2br }}</td>  
           <td>{{medProto.formBefore}}</td>
           <td class="borderR">{{medProto.poseBefore}}</td>
           <td>{{medProto.nom}}</td>
           <td>{{medProto.dosage}}</td>
           <td>{{medProto.forme}}</td>
           <td class="borderR">{{medProto.poso}}</td>
-          <td rowspan="2">{{medProto.divergence}}</td>
-          <td rowspan="2">{{medProto.divergenceType}}</td>
-          <td rowspan="2" >{{medProto.severity}}</td>    
-          <td rowspan="2" class='propCom'style="min-width: 200px;max-width: 200px;word-wrap: break-word;">{{medProto.proposition}}</td>
-          <td rowspan="2" class='propCom' style="min-width: 200px;max-width: 200px;word-wrap: break-word;">{{medProto.comment}}</td>
+          <td class="borderB" rowspan="2">{{medProto.divergence}}</td>
+          <td class="borderB" rowspan="2">{{medProto.divergenceType}}</td>
+          <td class="borderB" rowspan="2" >{{medProto.severity}}</td>    
+          <td rowspan="2" class='propCom borderB'style="min-width: 200px;max-width: 200px;word-wrap: break-word;">{{medProto.proposition}}</td>
+          <td rowspan="2" class='propCom borderB' style="min-width: 200px;max-width: 200px;word-wrap: break-word;">{{medProto.comment}}</td>
         </tr>
-        <tr id='medProto{{medProto.id}}' > 
+        <tr id='medProto{{medProto.id}}2' class="lineColorMouseOut">  {# lignes concernant les dates #}
 
-          <td colspan="4" class="borderR" >
+          <td colspan="4" class="borderR borderB borderT " style="border-top:none;">
             <i>
               {% if not medProto.dateMedBefore %}
                   Prise : du {{medProto.medStartBefore|date('d/m/Y')}} au {{medProto.medEndBefore|date('d/m/Y')}}
               {% else %}
-                  Pas de dates de prise du médicament indiquées !
+                  dates de prise du médicament non indiquées !
               {% endif %}
             </i>
           </td>
 
-          <td colspan="4" class="borderR">
+          <td colspan="4" class="borderR borderB caca">
             <i>
               {% if not medProto.dateMedHosp %}
                   Prise : du {{medProto.medStartHosp|date('d/m/Y')}} au {{medProto.medEndHosp|date('d/m/Y')}}
               {% else %}
-                  Pas de dates de prise du médicament indiquées !
+                  dates de prise du médicament non indiquées !
               {% endif %}
             </i>
           </td>
         </tr>
       {% endfor %}
 
-
-
-{#       <tr class="test42bis">
-        <td colspan="14" > 
-          <a href="{{ path('addMedProto', {'idBimo': bimo.id} ) }}"  >
-            caaaaaaaaaca 1
-          </a>
-        </td>
-      </tr>
-      <tr class="test42bis">
-        <td colspan="14" > 
-          <a href="{{ path('addMedProto', {'idBimo': bimo.id} ) }}"  >
-            caaaaaaaaaca 2
-          </a>
-        </td>
-      </tr>
- #}
-
-      <tr>
+      <tr style="background-color:#99C210;">
         <td colspan="14" id="newLine"> 
-          <a href="{{ path('addMedProto', {'idBimo': bimo.id} ) }}"  >
-            <i class="glyphicon glyphicon-chevron-right"></i>
+          <a style="color:white;font-size:20px;" href="{{ path('addMedProto', {'idBimo': bimo.id} ) }}"  >
             Ajouter une ligne
+            <i class="glyphicon glyphicon-edit"></i>
           </a>
         </td>
       </tr>
@@ -137,11 +112,15 @@
       <i class="glyphicon glyphicon-chevron-left"></i>
       Retour à la liste des BIMOs
     </a>
-    <a href="{{ path('editBimo', {'id': bimo.id} ) }}" class="btn btn-warning">
+{#     <a href="{{ path('editBimo', {'id': bimo.id , 'username':app.user.username} ) }}" class="btn btn-warning">
       <i class="glyphicon glyphicon-edit"></i>
       Modifier la Bimo
+    </a> #}
+    <a href="{{ path('pdfBimo', {'bimo_id': bimo.id} ) }}"  class="btn btn-warning">
+      Extraire sous Format PDF
+      <i class="glyphicon glyphicon-file"></i>
     </a>
-    <a href="{{ path('deleteBimo', {'bimo_id': bimo.id} ) }}" class="btn btn-danger">
+    <a href="{{ path('deleteBimo', {'bimo_id': bimo.id} ) }}" style="background-color:#E6501E;" class="btn btn-danger">
       <i class="glyphicon glyphicon-trash"></i>
       Supprimer la Bimo
     </a>
@@ -151,29 +130,134 @@
   // Création du lien pour ajouter une logne
   var line = document.getElementById('newLine');
   //var line = document.getElementsByClassName    ('newLine');
-  var route = "{{  path('addMedProto', {'idBimo': bimo.id} )|escape('js') }}";
+  
   line.addEventListener('click', function() {         
-     window.location = route;
+     window.location = "{{  path('addMedProto', {'idBimo': bimo.id} )|escape('js') }}";
   });
   line.addEventListener('mouseover', function() {         
-    line.style = "cursor:pointer;"
+    line.style = "cursor:pointer;background-color:#739600";
   });
+  line.addEventListener('mouseout', function() {         
+    line.style = "cursor:pointer;background-color:#99C210";
+  });
+
+  {% if bimo.medProtos is empty %}
+    line.style = "padding-top:30px;padding-bottom:30px;"
+  {% endif %}
 
   // créations des liens pour modifier chaque ligne
   var lienMedProto = new Array();
+  var lienMedProto2 = new Array(); {# lignes concernant les dates #}
 
   {% for medProto in bimo.medProtos %}
 
     lienMedProto.push(document.getElementById('medProto{{medProto.id}}'));
+    lienMedProto2.push(document.getElementById('medProto{{medProto.id}}2'));
 
     lienMedProto[{{loop.index0}}].addEventListener('mouseover', function() {
-      lienMedProto[{{loop.index0}}].style ="cursor:pointer;";    
+      lienMedProto[{{loop.index0}}].style ="cursor:pointer;";  
+      lienMedProto2[{{loop.index0}}].classList.add("lineColorMouseOver");   
+      lienMedProto[{{loop.index0}}].classList.add("lineColorMouseOver");  
     });
 
+    lienMedProto2[{{loop.index0}}].addEventListener('mouseover', function() {
+      lienMedProto2[{{loop.index0}}].style ="cursor:pointer;";  
+      lienMedProto2[{{loop.index0}}].classList.add("lineColorMouseOver");   
+      lienMedProto[{{loop.index0}}].classList.add("lineColorMouseOver");  
+    });
+
+    lienMedProto2[{{loop.index0}}].addEventListener('click', function() {         
+        window.location = "{{ path('editMedProto', {'id': medProto.id })|escape('js') }}";
+    });
     lienMedProto[{{loop.index0}}].addEventListener('click', function() {         
         window.location = "{{ path('editMedProto', {'id': medProto.id })|escape('js') }}";
     });
 
+    lienMedProto[{{loop.index0}}].addEventListener('mouseout', function() {
+      lienMedProto[{{loop.index0}}].style ="cursor:pointer;";  
+      lienMedProto2[{{loop.index0}}].classList.remove("lineColorMouseOver");   
+      lienMedProto[{{loop.index0}}].classList.remove("lineColorMouseOver");  
+    });
+
+    lienMedProto2[{{loop.index0}}].addEventListener('mouseout', function() {
+      lienMedProto2[{{loop.index0}}].style ="cursor:pointer;";  
+      lienMedProto2[{{loop.index0}}].classList.remove("lineColorMouseOver");   
+      lienMedProto[{{loop.index0}}].classList.remove("lineColorMouseOver");  
+    });
+
   {% endfor %}
 </script>
+
+<style>
+  .lineColorMouseOut{
+    background-color:#e8e8e8;
+  }
+  .lineColorMouseOver{
+    background-color:#C8C8C8;
+  }
+
+  .borderR
+  {
+    border-right: 1px solid white;
+  }
+  .borderB
+  {
+    border-bottom:5px solid white;
+  }
+
+  table {
+    border-collapse: collapse; 
+    border :none;
+  }
+  td {
+    margin:auto;
+    text-align:center;
+    padding: 5px;
+  }
+  th {
+    margin:auto;
+    text-align:center;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  thead {
+    font-weight: bold;
+
+  }
+
+  .propCom{
+    width:100px;
+  }
+
+  #tableau {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 12px;
+    margin: 10px 0;
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+  }
+  #tableau th {
+    font-size: 13px;
+    font-weight: normal;
+    padding: 8px;
+    background-color: #99C210;
+    color: white;
+  }
+  #tableau td {
+    padding: 8px;
+  }
+  #tableau tfoot tr td {
+    background: #e8edff;
+    font-size: 16px;
+    /*color: #99c;*/
+    text-align:center;
+    /*background-color: #e8e8e8;*/
+  }
+
+  #tableau a:hover {
+    text-decoration:underline;
+  }
+</style>
 {% endblock %}

@@ -14,19 +14,32 @@
 	    </a>
 	</p>
 
-	{% if is_granted('ROLE_ADMIN') %}
+	
 		
 
  		<h2>Modification de profil Utilisateur {{user.username}} </h2>
-		<div>{{ include("UserBundle:User:formUser.html.twig") }}</div>
+		<div>
+			<div class="col-sm-10">
+				<div class="well">
+			 		{{ form_start(form) }}
 
-		    
-			
-	{% else %}
-    	<p> Vous ne disposez pas des droits necessaires <p>
-	{% endif %}
+			 		{{ form_label(form.username, "Nom d'utilisateur", {'label_attr': {'class': 'col-sm-0 control-label'}}) }}
+					{{ form_widget(form.username) }}
+					<br/>
 
+					{% if is_granted('ROLE_ADMIN') %}
+						{{ form_label(form.roles, "Droits", {'label_attr': {'class': 'col-sm-0 control-label'}}) }}
+						{{ form_widget(form.roles) }}
+					{% endif %}
 
+					{{ form_label(form.save) }} 
+					{{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}
+
+			        {{ form_rest(form) }}
+			   		{{ form_end(form) }} 
+				</div>
+			</div>
+		</div>
 
    
 {% endblock %}

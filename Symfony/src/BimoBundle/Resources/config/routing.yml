@@ -33,7 +33,7 @@ editMedProto:
     defaults:
         _controller: BimoBundle:Bimo:editMedProto
         id: null
-    requirements:
+    requirements:       
         id: \d+
 
 addBimo:
@@ -94,11 +94,13 @@ test:
         _controller: BimoBundle:Bimo:test
 
 editBimo:
-    path:      /editBimo/{id}
+    path:      /editBimo/{id}/{username}
     defaults:
         _controller: BimoBundle:Bimo:editBimo
+        username : v
     requirements:
         id: \d+
+
 
 deleteBimo:
     path:      /deleteBimo/{bimo_id}
@@ -131,3 +133,9 @@ deletePatient:
     requirements:
         id: \d+
 
+deleteMedProto:
+    path:      /deleteMedProto/{id}
+    defaults:
+        _controller: BimoBundle:Bimo:deleteMedProto
+    requirements:
+        id: \d+

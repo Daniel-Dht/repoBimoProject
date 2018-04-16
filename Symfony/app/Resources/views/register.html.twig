@@ -2,7 +2,7 @@
 
 
 
-{% block body %}
+{% block login %}
 <div class="container">
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
@@ -10,9 +10,13 @@
           <div class="panel-heading">Register</div>
           <div class="panel-body">
             {{ form_start(form) }}
+
             <div class="form_group">
                 <div class="col-md-8 col-md-offset-2">
-                  {{ form_row(form.username, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_row(form.username, {'attr': {'class': 'form-control'}}) }}
+                    {% if usernameAlreadyTaken is defined and usernameAlreadyTaken is not empty %}
+                    <i> ce nom d'utilisateur est déja pris ! </i><br/><br/>
+                    {% endif %}
                 </div>
             </div>
 

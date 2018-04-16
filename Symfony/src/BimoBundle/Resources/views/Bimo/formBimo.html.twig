@@ -1,4 +1,4 @@
-
+  
 <div class="well">
   <legend style="text-align: center;">Création d'un BIMO</legend>
 
@@ -13,16 +13,40 @@
   {# {{ form_end(form) }}  #}
 
 <div id='site_medProtos' data-prototype="{% filter escape %}{% include 'BimoBundle:Bimo:formMedProto.html.twig' with {'form': form.medProtos.vars.prototype} %}{% endfilter %}">
+
   {% for medProto in form.medProtos %}
-      {% include 'BimoBundle:Bimo:formMedProto.html.twig' with {'form': medProto} %}
+      <li>{% include 'BimoBundle:Bimo:formMedProto.html.twig' with {'form': medProto} %}</li>
   {% endfor %}
-</div>
+{# </div> #}
 
   {{ form_widget(form) }}
   {{ form_end(form, {'render_rest': false}) }}
 
   {# {{ form_end(form) }} #}
 </div>
+
+  <div class="col-sm-25">
+    <div class="well">
+
+      {{ form_start(form)}}
+      {{ form_row(form.patient) }}
+      {{ form_row(form.urgency, {'label':'Ce BIMO necessite un traitement urgent'}) }}
+
+      {# <div id='site_medProtos' data-prototype="{% filter escape %}{% include 'BimoBundle:Bimo:formMedProto.html.twig' with {'form': form.medProtos.vars.prototype} %}{% endfilter %}"> #}
+        
+        {% for medProto in form.medProtos %}
+            {% include 'BimoBundle:Bimo:formMedProto.html.twig' with {'form': medProto} %}
+        {% endfor %}
+      {# </div> #}
+      
+      {# {{ form_widget(form) }} #}
+      {{ form_row(form.save) }}
+
+      {# {{ form_end(form, {'render_rest': false}) }} #}
+      {{ form_end(form) }}
+
+    </div>
+  </div> 
 
 
 

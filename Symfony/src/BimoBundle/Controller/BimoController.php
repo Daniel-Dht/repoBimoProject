@@ -19,6 +19,8 @@ use BimoBundle\Form\BimoType ;
 use BimoBundle\Form\BimoEditType ;
 use BimoBundle\Form\BimoPatientType ;
 
+use UserBundle\Entity\UserBimo;
+use UserBundle\Entity\User;
 
 class BimoController extends Controller
 {
@@ -47,17 +49,23 @@ class BimoController extends Controller
 	    if ($request->isMethod('POST') &&
 	    	$form->handleRequest($request)->isValid()) 
 	    {
+	    	$emDos = $this->getDoctrine()
+				->getManager()
+				->getRepository('BimoBundle:MedProto');
 
-	    	$texte = $form->get('dosage')->getdata();
-		    if (preg_match("#^[0-9][-._/,;:* ]?[0-9][-._/,;:* ]?[0-9]$#", $texte))
-		    {
-		      $texte = preg_replace('#^([0-9])[-._/,;:* ]?([0-9])[-._/,;:* ]?([0-9])$#', 'matin : $1 midi : $2 soir : $3', $texte);
-		    }
-	    	$medProto->setDosage($texte);
+	    	$texteDosage = $form->get('dosage')->getdata();
+			$texteDosage = $emDos->dosageExpression($texteDosage);
+	    	$medProto->setDosage($texteDosage);
+
+	    	$texteDosageBefore = $form->get('dosageBefore')->getdata();
+			$texteDosageBefore = $emDos->dosageExpression($texteDosageBefore);
+	    	$medProto->setDosageBefore($texteDosageBefore);
 
 	    	$bimo->addMedProto($medProto);
+	    	$bimo->updateDate();
 
 			$em = $this->getDoctrine()->getManager();
+			
 			$em->persist($medProto);
 			$em->flush();
 
@@ -97,9 +105,7 @@ class BimoController extends Controller
 	    if (null === $medProto) {
 	      throw new NotFoundHttpException("La ligne de ce BIMO d'id ".$id." n'existe pas.");
 	    }
-
 	    $bimo = $medProto->getBimo();
-	    ;
 	    if (null === $bimo) {
 	      throw new NotFoundHttpException("Le BIMO d'id ".$medProto->getId()." n'existe pas.");
 	    }
@@ -124,6 +130,7 @@ class BimoController extends Controller
 			$texteDosageBefore = $emDos->dosageExpression($texteDosageBefore);
 	    	$medProto->setDosageBefore($texteDosageBefore);
 
+	    	$bimo->updateDate();
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($medProto);
 			$em->flush();
@@ -142,90 +149,117 @@ class BimoController extends Controller
 
         $listMedocs = $em->findAll() ;
 
-	    return $this->render('addMedProto.html.twig', array(
+	    return $this->render('BimoBundle:bimo:editMedProto.html.twig', array(
 	      'form' => $form->createView(),
 	      'bimo' => $bimo,
 	      'listMedocs' => $listMedocs,
+	      'medProto' => $medProto,
 
 	    ));
 
     }
 
 
-	public function AddBimoAction(Request $request, $idPatient)
+	// public function AddBimoAction(Request $request, $idPatient)
+ //    {
+ //    	$bimo = new Bimo();
+ //    	//Si l'argument idPatient est non nul, on set l'attribut 'patient' du bimo avec le patient associé
+ //    	if(isset($idPatient)){
+ //    		$patient = $this
+	// 	    	->getDoctrine()
+	// 	      	->getManager()
+	// 	      	->getRepository('BimoBundle:Patient')
+	// 	      	->find($idPatient)
+	//     	;
+	//     	if (null == $patient) {
+	//       		throw new NotFoundHttpException("Le patient d'id ".$id." n'existe pas.");
+	//     	}
+	//     	$bimo->setPatient($patient);
+ //    	}
+	//     if (empty($patient)) {
+	// 	    $form = $this
+	// 	    	->get('form.factory')
+	// 	    	->create(BimoType::class, $bimo);
+	//     }
+	//     else{
+	//     	$form = $this
+	// 	    	->get('form.factory')
+	// 	    	->create(BimoPatientType::class, $bimo);
+	//     }
+	//     // même méthode post pour les deux configurations :
+	//     if ($request->isMethod('POST') &&
+	//     	$form->handleRequest($request)->isValid()) 
+	//     {
+
+	// 		$em = $this->getDoctrine()->getManager();
+	// 		$em->persist($bimo);
+	// 		$em->flush();
+
+	// 		$request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+
+	// 		return $this->redirectToRoute('viewBimo', array(
+	// 			'id' => $bimo->getId(),
+	// 		));
+	//     }
+	//     $em = $this->getDoctrine() // On va chercher la liste des medoc !
+ //            ->getManager()
+ //            ->getRepository('BimoBundle:Medicaments')
+ //        ;
+ //        $listMedocs = $em->findAll() ;
+	//     //Renvoie le formulaire d'un bimo permettant de choisir le patient associé
+	//     if (empty($patient)) {
+
+
+	//     	return $this->render('BimoBundle:Bimo:addBimo.html.twig', array(
+	// 	      'form' => $form->createView(),
+	//      	  'listMedocs' => $listMedocs,
+	//     	));
+	//     }
+
+
+	//     //Renvoie le formulaire d'un bimo accocié à $patient
+	//     return $this->render('BimoBundle:Bimo:addBimo.html.twig', array(
+	//       'form' => $form->createView(),
+	//       'patient' => $patient,
+	//       'listMedocs' => $listMedocs,
+	//     ));
+
+ //    }
+    public function AddBimoAction(Request $request, $idPatient)
     {
     	$bimo = new Bimo();
-    	//Si l'argument idPatient est non nul, on set l'attribut 'patient' du bimo avec le patient associé
-    	if(isset($idPatient)){
-    		$patient = $this
+
+    	$patient = $this
 		    	->getDoctrine()
 		      	->getManager()
 		      	->getRepository('BimoBundle:Patient')
 		      	->find($idPatient)
 	    	;
-	    	if (null == $patient) {
-	      		throw new NotFoundHttpException("Le patient d'id ".$id." n'existe pas.");
-	    	}
-	    	$bimo->setPatient($patient);
+    	if (null == $patient) {
+      		throw new NotFoundHttpException("Le patient d'id ".$id." n'existe pas.");
     	}
-	    if (empty($patient)) {
-		    $form = $this
-		    	->get('form.factory')
-		    	->create(BimoType::class, $bimo);
-	    }
-	    else{
-	    	$form = $this
-		    	->get('form.factory')
-		    	->create(BimoPatientType::class, $bimo);
-	    }
-	    // même méthode post pour les deux configurations :
-	    if ($request->isMethod('POST') &&
-	    	$form->handleRequest($request)->isValid()) 
-	    {
 
-			$em = $this->getDoctrine()->getManager();
-			$em->persist($bimo);
-			$em->flush();
+    	$bimo->setPatient($patient);
+    	$bimo->setUrgency(0);
 
-			$request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+		$em = $this->getDoctrine()->getManager();
+		$em->persist($bimo);
+		$em->flush();
 
-			return $this->redirectToRoute('viewBimo', array(
+	    return $this->redirectToRoute('viewBimo', array(
 				'id' => $bimo->getId(),
 			));
-	    }
-	    $em = $this->getDoctrine() // On va chercher la liste des medoc !
-            ->getManager()
-            ->getRepository('BimoBundle:Medicaments')
-        ;
-        $listMedocs = $em->findAll() ;
-	    //Renvoie le formulaire d'un bimo permettant de choisir le patient associé
-	    if (empty($patient)) {
-
-
-	    	return $this->render('BimoBundle:Bimo:addBimo.html.twig', array(
-		      'form' => $form->createView(),
-	     	  'listMedocs' => $listMedocs,
-	    	));
-	    }
-
-	    //Renvoie le formulaire d'un bimo accocié à $patient
-	    return $this->render('BimoBundle:Bimo:addBimo.html.twig', array(
-	      'form' => $form->createView(),
-	      'patient' => $patient,
-	      'listMedocs' => $listMedocs,
-	    ));
 
     }
 
-	public function editBimoAction($id, Request $request)
+	public function editBimoAction($id, Request $request, $username)
     {
-
-	    $bimo = $this
-	    	->getDoctrine()
-	      	->getManager()
+    	$em = $this
+    		 ->getDoctrine()
+	      	->getManager();
+	    $bimo = $em 
 	      	->getRepository('BimoBundle:Bimo')
-	      	->find($id)
-	    ;
+	      	->find($id);
 
 	    if (null === $bimo) {
 	      throw new NotFoundHttpException("Le BIMO d'id ".$id." n'existe pas.");
@@ -240,8 +274,22 @@ class BimoController extends Controller
 	    	$form->handleRequest($request)->isValid()) 
 	    {
 
+	    	// Gestion des update avec l'entité UserBimo
+		    $user = $em 
+		      	->getRepository('UserBundle:User')
+		      	->getUserByUsername($username)
+		    ;
+		    if (null === $user) {
+		      throw new NotFoundHttpException("Le username ".$username." n'existe pas.");
+		    }
+
+	    	$userBimo = new userBimo();
+	    	$userBimo->setBimo($bimo);
+	    	$userBimo->setUser($user);
+
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($bimo);
+			$em->persist($userBimo);
 			$em->flush();
 
 			$request->getSession()->getFlashBag()->add('notice', 'BIMO bien enregistrée.');
@@ -249,9 +297,17 @@ class BimoController extends Controller
 			return $this->redirectToRoute('viewBimo', array('id' => $bimo->getId()));
 	    }
 
+	    $em = $this->getDoctrine() // On va chercher la liste des medoc !
+            ->getManager()
+            ->getRepository('BimoBundle:Medicaments')
+        ;
+
+        $listMedocs = $em->findAll() ;
+
 	    return $this->render('BimoBundle:bimo:editBimo.html.twig', array(
 	      'form' => $form->createView(),
 	      'bimo' => $bimo,
+	      'listMedocs' => $listMedocs,
 	    ));
 
 	}
@@ -301,8 +357,6 @@ class BimoController extends Controller
 	      ->getRepository('BimoBundle:MedProto')
 	      ->findBy(array('bimo' => $bimo))
 	    ;
-
-	    // Le render ne change pas, on passait avant un tableau, maintenant un objet
 	    return $this->render('BimoBundle:Bimo:viewBimo.html.twig', array(
 	      'bimo' => $bimo,
 	    ));
@@ -398,6 +452,40 @@ class BimoController extends Controller
                 'Content-Disposition'   => 'inline; filename="'.$filename.'.pdf"'
             )
         );
+    }
+
+    public function deleteMedProtoAction(Request $request, $id)
+  	{
+	    $em = $this->getDoctrine()->getManager();
+
+	    $medProto = $em
+	    	->getRepository('BimoBundle:MedProto')
+	    	->find($id);
+
+	    if (null === $medProto) {
+	      throw new NotFoundHttpException("La Ligne d'id ".$id." n'existe pas.");
+	    }
+	    // On crée un formulaire vide, qui ne contiendra que le champ CSRF
+	    // Cela permet de protéger la suppression d'annonce contre cette faille
+	    $form = $this->get('form.factory')->create();
+
+	    if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+	    	$bimo = $medProto->getBimo();
+			$em->remove($medProto);
+			$em->flush();
+
+			$request->getSession()->getFlashBag()->add('info', "Le medProto a bien été supprimée.");
+
+			return $this->render('BimoBundle:Bimo:viewBimo.html.twig', array(
+			   'bimo' => $bimo,
+	    	));
+	    }
+	    
+	    return $this->render('BimoBundle:Bimo:deleteMedProto.html.twig', array(
+	      'medProto' => $medProto,
+	      'bimo' => $medProto->getBimo(),
+	      'form'   => $form->createView(),
+	    ));
     }
 
 }

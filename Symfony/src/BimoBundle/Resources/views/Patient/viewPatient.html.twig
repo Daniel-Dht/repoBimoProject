@@ -7,92 +7,161 @@
 {% endblock %}
 
 {% block body %}
-  <h4> Fiche Patient</h4>
-  <hr/>
-  <h2>{{patient.prenom}} {{patient.nom}}</h2>
-
-
-    {# Check si le patient est déja dans la liste des partient à la charge de l'utilisateur courant #}
-    {% set break = false %}
-    {% for patientOfUser in app.user.patients if not break %}
-
-      {% if patient.id==patientOfUser.id %}
-          {% set break = true %}
-           <i>Ce Patient est indiqué comme étant à votre charge, </i>
-            <a href="{{ path('removePatientFromUser', {'patient_id': patient.id,'user_id': app.user.id }) }}" class="btn btn-primary">
-               Retirer ce patient de votre liste personnelle
-              <i class="glyphicon glyphicon-chevron-right"></i>
-            </a>
-      {% endif %}
-
-    {% endfor %}
-    {% if break == false %}
-      <a href="{{ path('AddPatientToUser', {'idPatient': patient.id,'idUser': app.user.id }) }}" class="btn btn-primary">
-        Rajouter ce Patient  à votre liste personnelle
-        <i class="glyphicon glyphicon-chevron-right"></i>
-      </a>
+  {# Check si le patient est à la charge de l'utilisateur #}
+  {% set break = false %}
+  {% for patientOfUser in app.user.patients if not break %}
+    {% if patient.id==patientOfUser.id %}
+      {% set break = true %}
     {% endif %}
+  {% endfor %}
 
-  <p>
+  <div class="well">
+    <div class="flex1" style="border-bottom:1px solid gray">
+      <h2>{{patient.prenom}} {{patient.nom}}</h2>
+      <div id="infoPatient">
+        {% for hosp in patient.hosps %}
+          {% if hosp.active == true %}
+            <i style="padding-left:15px" class="glyphicon glyphicon-list-alt"></i><i> Ce patient est en cours d'hospitalisation depuis le {{hosp.startDate|date('d/m/Y') }} </i><br/>
+          {% endif %}
+        {% endfor %}
+        {% if break == true %}
+           <i class="glyphicon glyphicon-star" style="padding-left:15px"></i><i> Ce Patient est indiqué comme étant à votre charge   </i>
+        {% endif %}
+      </div>
+    </div>
     <br/>
-    Description : on pourrait mettre ici les dates d'entrée dans l'hoital, son nombre de Bimo totale, est-ce que son état necessite un traitement urgent etc..
-    Les liens de tous les Bimos crées !
-    <br/> 
-    Créer une entity séjour liéer en ManyToOne à Patient, si la date actuelle est dans le séjour, on peut rajouter un filtre dans la liste Patient du type, "Patient actullement hospitalisé", etc...
-  </p> 
-  <br/>
 
-  {# check si le patient est acutelement hospitalisé #}
-  {% for hosp in patient.hosps %}
-    {% if hosp.active == true %}
-      <i> Ce patient est en cours d'hospitalisation depuis le {{hosp.startDate|date('d/m/Y') }} </i>
-    {% endif %}
-  {% endfor %} 
+    <div class="flex2">
+      <div id="information">
+        <ul class=" details" style="list-style: none;">
+          <li><p><span class="glyphicon glyphicon-calendar" style="width:50px;"></span>
+            date de naissance : 
+            {% if patient.birthDay is not null %}
+              <strong>{{patient.birthDay}}</strong>
+            {% else %}
+              <i>non mentionné</i>
+            {% endif %}
+          </p></li>
+          <li><p><span class="glyphicon glyphicon-earphone one" style="width:50px;"></span>
+            numéro de téléphone : 
+            {% if patient.phoneNumber is not null %}
+              <strong>{{patient.phoneNumber}}</strong>
+            {% else %}
+              <i>non mentionné</i>
+            {% endif %}
+          </p></li>
+          <li><p title="numéro de sécurité sociale"><span class="glyphicon glyphicon-envelope one" style="width:50px;"></span>
+            adresse mail : 
+            {% if patient.mail is not null %}
+            <strong>{{patient.mail}}</strong>
+            {% else %}
+              <i>non mentionné</i>
+            {% endif %}
+          </p></li>
+          <li><p><span class="glyphicon glyphicon-map-marker one" style="width:50px;"></span>
+            adresse postale : 
+            {% if patient.adress is not null %}
+            <strong>{{patient.adress}}</strong>
+            {% else %}
+              <i>non mentionné</i>
+            {% endif %}
+          </p></li>
+          <li><p><span class="glyphicon glyphicon-credit-card one" style="width:50px;"></span>
+            numéro de sécurité sociale :
+            {% if patient.socialSecurityNumber is not null %}
+            <strong>{{patient.socialSecurityNumber}}</strong>
+            {% else %}
+              <i>non mentionné</i>
+            {% endif %}
+          </p></li>
 
+          <li><p><span class="glyphicon glyphicon-user" style="width:50px;"></span>
+            médecin traitant :
+            {% if patient.phoneNumber is not null %}
+            <strong>{{patient.doctor}}</strong>
+            {% else %}
+              <i>non mentionné</i>
+            {% endif %}
+          </p></li>
+          <li><p><span class="glyphicon glyphicon-heart" style="width:50px;"></span>
+            groupe sanguin :
+            {% if patient.bloodGroup is not null %}
+            <strong>{{patient.bloodGroup}}</strong>
+            {% else %}
+              <i>non mentionné</i>
+            {% endif %}
+          </p></li>
 
-  <h3> Dates d'hospitalisations : </h3>
-  <p>
-    {% for hosp in patient.hosps %}
-        <li><a href="{{ path('viewHosp', {'id': hosp.id }) }}" class="hosp"> {{ hosp.startDate|date('d/m/Y') }} au {{ hosp.releaseDate|date('d/m/Y') }}</a></li>
-    {% else %}
-      <i>Pas (encore !) de date pour ce patient</i>
-    {% endfor %}
-  </p>
+        </ul>
+      </div>
 
-  <p>
-    <a href="{{ path('addHosp', {'idPatient': patient.id }) }}" class="btn btn-success">
-      <i class="glyphicon glyphicon-chevron-right"></i>
-      Ajouter un séjour à l'hopital
-    </a>
-  </p>
+      <div id='bimoRemplis'>
+        <h3> Liste des BIMO remplis :</h3>
+        <p>
+          
+          {% for bimo in patient.bimos %}
+            <li>
+              <a href="{{ path('viewBimo', {'id': bimo.id}) }}">
+                BIMO du {{ bimo.date|date('d/m/Y') }}
+              </a>
+            </li>
+          {% else %}
+            <i>Pas de BIMO pour ce patient</i>
+          {% endfor %}
+        </p>
+        <p>
+          <a href="{{ path('addBimo', {'idPatient': patient.id }) }}" class="btn btn-success">
+            <i class="glyphicon glyphicon-chevron-right"></i>
+            Créer un Bimo pour {{patient.prenom}} {{patient.nom}}
+          </a>
+        </p>
+      </div>
 
-  <h3> Liste des BIMO remplis :</h3>
-  <p>
-    
-    {% for bimo in patient.bimos %}
-      <li>
-        <a href="{{ path('viewBimo', {'id': bimo.id}) }}">
-          BIMO du {{ bimo.date|date('d/m/Y') }}
+      <div id="hospitalisations">
+        <h3> Dates d'hospitalisations : </h3>
+        <p>
+          {% for hosp in patient.hosps %}
+              <li><a href="{{ path('viewHosp', {'id': hosp.id }) }}" class="hosp"> {{ hosp.startDate|date('d/m/Y') }} au {{ hosp.releaseDate|date('d/m/Y') }}</a></li>
+          {% else %}
+            <i>Pas de dates pour ce patient</i>
+          {% endfor %}
+        </p>
+        <p>
+          <a href="{{ path('addHosp', {'idPatient': patient.id }) }}" class="btn btn-success">
+            <i class="glyphicon glyphicon-chevron-right"></i>
+            Ajouter un séjour à l'hopital
+          </a>
+        </p>
+      </div>        
+    </div>
+    <hr/>
+    <div id="gestionPatient" style="display:flex;justify-content:center;">
+      <a href="{{ path('editPatient', {'id':patient.id}) }}" class="btn btn-warning">
+        <i class="glyphicon glyphicon-edit"></i>
+        Modifier le profil
+      </a> 
+
+      {% if break == true %}
+        <a style="margin-left:5px;margin-right:5px;" href="{{ path('removePatientFromUser', {'patient_id': patient.id,'user_id': app.user.id }) }}" class="btn btn-primary">
+           Retirer ce patient de votre liste personnelle
+          <i class="glyphicon glyphicon-chevron-down"></i>
         </a>
-        (id n°{{bimo.id}})
-      </li>
-    {% else %}
-      <i>Pas (encore !) de BIMO pour ce patient</i>
-    {% endfor %}
-    
-  </p>
+      {% else %}
+        <a style="margin-left:5px;margin-right:5px;" href="{{ path('AddPatientToUser', {'idPatient': patient.id,'idUser': app.user.id }) }}" class="btn btn-primary">
+          Rajouter ce Patient  à votre liste personnelle
+          <i class="glyphicon glyphicon-chevron-down"></i>
+        </a>
+      {% endif %} 
 
-  <p>
-    <a href="{{ path('addBimo', {'idPatient': patient.id }) }}" class="btn btn-success">
-      <i class="glyphicon glyphicon-chevron-right"></i>
-      Créer un Bimo pour {{patient.prenom}} {{patient.nom}}
-    </a>
-  </p>
+      <a href="{{ path('deletePatient', {'id':patient.id}) }}" class="btn btn-danger">
+        <i class="glyphicon glyphicon-trash"></i>
+        Supprimer le profil 
+      </a>
+    </div>
 
+  </div>
 
-  <hr/>
-
-  {# le code suivant permet le retour à la vue bimo associée si l'on y vient #}
+  {# le code suivant permet le retour à la vue bimo associée si l'on en vient #}
   <p>
     {% if idBimo is defined %}
       {% if idBimo is empty %}
@@ -108,44 +177,23 @@
       {% endif %}
     {% endif %}
 
-    <a href="{{ path('editPatient', {'id':patient.id}) }}" class="btn btn-warning">
-      <i class="glyphicon glyphicon-edit"></i>
-      Modifier le profil
-    </a>
-
-    <a href="{{ path('deletePatient', {'id':patient.id}) }}" class="btn btn-danger">
-      <i class="glyphicon glyphicon-trash"></i>
-      Supprimer le profil 
-    </a>
-
   </p>
-  
-   <div class="container">    
-      <div class="jumbotron">
-        <div class="row">
-            <div class="col-md-9 col-xs-12 col-sm-6 col-lg-9">
-                <div class="" style="border-bottom:1px solid black">
-                  <h2>{{patient.prenom}} {{patient.nom}} {{patient.phoneNumber}}</h2>
-                </div>
-                  <hr>
-                <div class="col-md-8">  
-                <ul class=" details">
-                  <li><p><span class="glyphicon glyphicon-earphone one" style="width:50px;"></span>{{patient.phoneNumber}}</p></li>
-                  <li><p><span class="glyphicon glyphicon-envelope one" style="width:50px;"></span>somerandom@email.com</p></li>
-                  <li><p><span class="glyphicon glyphicon-map-marker one" style="width:50px;"></span>Hyderabad</p></li>
-                  <li><p><span class="glyphicon glyphicon-credit-card one" style="width:50px;"></span>66330007</p></li>
-                </ul>
-                </div>
-                <div class="col-md-4">  
-                  <div class="col-sm-5 col-xs-6 tital " >Birthday:</div><div class="col-sm-7 col-xs-6 ">2018/2/15</div>
-                  <div class="clearfix"></div><div class="bot-border"></div>
-                  <div class="col-sm-5 col-xs-6 tital " >Gender:</div><div class="col-sm-7 col-xs-6 ">Prasad</div>
-                  <div class="clearfix"></div><div class="bot-border"></div>
-                  <div class="col-sm-5 col-xs-6 tital " >Ethnicity:</div><div class="col-sm-7 col-xs-6 ">sdfsdfsdfsdfsdf</div>
-                  <div class="clearfix"></div><div class="bot-border"></div>
-                </div>
-            </div>
-          </div>
-      </div>
-  </div>
+
+<style>
+
+  .flex1
+  {
+    display: flex;
+    /*justify-content: center;*/
+      align-items: center;
+
+  }
+  .flex2
+  {
+    display: flex;
+    justify-content: space-around;
+      /*align-items: center;*/
+
+  } 
+  </style>
 {% endblock %}

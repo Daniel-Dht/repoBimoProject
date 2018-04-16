@@ -56,6 +56,22 @@ class BimoRepository extends \Doctrine\ORM\EntityRepository
 
 	
 	}
+	public function getLastBimoOfPatient($idPatient)
+	{
+	    $query = $this
+	    	->createQueryBuilder('b')
+	    	->leftJoin('b.patient','p')
+			->addSelect('p')
+			->where('p.id = :id')
+    		->setParameter('id', $idPatient)
+			->addselect('MAX(b.id)')
+			
+	    ;
+	    return $query
+			->getQuery()
+			->getResult()
+		;
+	}
 	public function getUrgentBimos($page,$nbPerPage) 
 	{
 

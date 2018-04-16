@@ -54,11 +54,11 @@ class MedProtoType extends AbstractType
 
             ->add('medStartBefore', DateType::class)
             ->add('medEndBefore',   DateType::class)
-            ->add('dateMedBefore',  CheckboxType::class, array('required' => false, 'label'=>'Les dates de prise sont inconnues'))
+            ->add('dateMedBefore',  CheckboxType::class, array('required' => false, 'label'=>'Ne pas mentionner les dates'))
 
             ->add('medStartHosp',   DateType::class)
             ->add('medEndHosp',     DateType::class)
-            ->add('dateMedHosp',    CheckboxType::class, array('required' => false, 'label'=>'Ne pas mentionnez les dates'))
+            ->add('dateMedHosp',    CheckboxType::class, array('required' => false, 'label'=>'Ne pas mentionner les dates'))
 
             ->add('save',           SubmitType::class, array(
                 'label'=>'Enregistrer',

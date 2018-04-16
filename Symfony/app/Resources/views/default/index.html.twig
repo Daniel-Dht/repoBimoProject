@@ -2,73 +2,38 @@
 
 {% block body %}
 
-	<p>
-		Bonjour {{ app.user.username }} 
-	</p>
-   <h2> idées/ à faire : </h2>
+   <div>
+      <div style="display:flex;justify-content :center;align-items: center;" >
+        <img style="width:200px;height:400px;" src="{{ asset('images/blocs.png') }}" alt='logoBloc1' />
+        <div style="display:flex;justify-content:space-around;flex-direction: column;margin-left:50px;margin-top:30px;">
+          <a href="{{path('addPatient') }}" class="btn btn-success" style="background-color:#99C210;border:none;">
+            <i class="glyphicon glyphicon-edit"></i>
+            Ajouter un nouveau patient
+          </a><br/>
+          <a href="{{path('listPatient') }}" class="btn btn-success" style="background-color:#99C210;border:none;">
+            <i class="glyphicon glyphicon-list-alt"></i>
+            Liste des Patients
+          </a><br/>
+          <a href="{{path('listBimo') }}" class="btn btn-success" style="background-color:#8B2980;border:none;">
+            <i class="glyphicon glyphicon-list-alt"></i>
+            Liste des BIMO
+          </a><br/>
+          <a href="{{path('urgentListBimo') }}" class="btn btn-success" style="background-color:#8B2980;border:none;">
+            <i class="glyphicon glyphicon-alert"></i>
+            BIMO urgents
+          </a><br/>
+          <a href="{{path('listUser') }}" class="btn btn-success" style="background-color:#E6501E;border:none;">
+            <i class="glyphicon glyphicon-list-alt"></i>
+            Liste du Personnel
+          </a><br/>
+          <a href="{{path('addUser') }}" class="btn btn-success" style="background-color:#E6501E;border:none;">
+            <i class="glyphicon glyphicon-user"></i>
+            Ajouter un nouvel utilisateur
+          </a><br/>
 
-   		<ul>
-   			<li> <h4><strong>Mettre en ligne ce putain de site***</strong></h4></li>
-   			<li> <h4> <strong>Synchroniser automatiquement  la bdd med chaque mois****</strong> </h4></li>
+        </div>
+      </div>
 
-   			<li> <h4><strong>hash des noms et prénoms de patients***</strong></h4></li>
-   			chaud, surtout pour les patients si on veut ffaire des recherches par autocompletion
-
-   			<li> <h4> <strong>Gérer la relation User OneToMany Patient** </strong></h4> ou carrément mieux : ManyToMany :
-	   			<p>
-	   			Chaque Utilisateur, qu'il soit medecin, pharmacien ou autre serait lié à un patient de sorte qu'il ne puisse modifier de ses BIMO que ce que ses droits lui permettent
-	   			</p>
-   			</li>
-
-   			<li>
-   				<h4> <strong> Autocomplétion retournant l'entité ***</strong></h4>
-   				 pas eulement son nom d'entité, mais bin elle même avec tous ses attributs <br/>
-   				 Question de la priorité de l'affichage des patients, selon qu'ils soient en cours d'hospitalisation ou non
-   			</li>
-   			   	
-   
-   			<li> 
-   				<h4><strong>Gérer la relation entre les séjour d'hospitalisation et les BIMO*</strong></h4>
-   				Bimo OneToMany Host ou l'inverse, question de la fiche BImo infini ?
-   			</li>
-  			 <li> 
-  			 	<h4> <strong>Gérer les rôles des utilisateurs*</strong> </h4>
-  			 	medecins, internes, pharmaciens, etc.. Qui peut modifier/créer <br/>
-  			 	Plus subtile, les bimos peuvent-elle être indéfinimment modifiables, ou doit on rajouter un attribut "bimo_ended" 
-  			 </li>
-  			 <li>
-   				<h4> <strong> Pour chaque entité : "last modification" **</strong></h4>
-   				ou même  une liste de chaque modification <br/>
-   				Ou alors une bdd comportement toutes les modif, avec les nom des utilisateurs impliqués, acceissbl seulement par les hauits admin.
-   			</li>
-
-   			<li>
-   				<h4> <strong> Intégrer des bulles d'aide/explication *</strong></h4>
-   				pour chaque cellule d'une fiche bimo, ou bien les realtion entre fiche et séjour d'hospitalisation
-   			</li>
-
-   			<li>
-   				<h4> <strong>Faire du tri dans la bdd de medicamment*</strong></h4>
-   				
-   				ex virer les doublons style doliprane 100g et doliprane 1000g <br/>
-   				Enfait il suffirait de limiter le nombre de medicaments qui appraissent ! <br/>
-   				ex : si je tape 'd', n'afficher queles 40 premiers med commençant par d par oredre alphab
-   				<br/>
-   				EN plus de tri, la modifier pour ne plus afficher les dose type 400mg, etc
-   			</li>
-
-   			<li>
-   				<h4> <strong> trouver du css de qualité pour les tableaux de bimo* </strong></h4>
-   				bien gérer le hover par rapport aux lignes à moitié fusionnées. Faire des test pour une bimo bien fournie
-   			</li>
-
-   			<li>
-   				<h4> <strong> Faire le CSS de l'extraction PDF*/ </strong></h4>
-   				Il s'ajit de trouver le bon css pour les tableaux, mais aussi de trouver comment afficher du HTML à la verticale, étant donné que l'oon souhaite avoir un pdf en mode paysage.
-   			</li>
-
-   		</ul>
-
-   		<hr/>
+   </div>
 
 {% endblock %}

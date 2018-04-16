@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use BimoBundle\Entity\MedProto;
@@ -56,17 +58,46 @@ class DefaultController extends Controller
             )
         );
     }
-    public function autoCAction() {
+    public function autoCAction(Request $request) {
 
         $em = $this->getDoctrine()
             ->getManager()
-            ->getRepository('BimoBundle:Medicaments')
+            ->getRepository('BimoBundle:Patient')
         ;
 
-        $listMedocs = $em->findAll() ;
+        $listPatient = $em->findAll() ;
+
+                $patient = new Patient();
+
+        $form = $this
+            ->get('form.factory')
+            ->create(PatientType::class, $patient);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) 
+         {
+                
+            // $nouveauNom = $form["prenom"]->getData();
+            // $patient->setNom($nouveauNom);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($patient);
+            $em->flush();
+
+            $request->getSession()->getFlashBag()->add('notice', 'Patient bien enregistrée.');
+
+            return $this->render('BimoBundle:Patient:viewPatient.html.twig', array(
+                'patient' => $patient,
+                'idBimo' => null ,
+            ));
+
+                // , array('id' => $patient->getId()));
+        }
 
         return $this->render('BimoBundle:Patient:TestAutoComp.html.twig', array(
-          'listMedocs' => $listMedocs,
+          'listPatient' => $listPatient,
+          'form' => $form->createView(),
         ));
       }
 

@@ -10,18 +10,9 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-
-use BimoBundle\Form\MedProtoType;
-use BimoBundle\Form\PatientType;
-use BimoBundle\Entity\MedProto;
-use BimoBundle\Entity\Patient;
 
 
-
-class BimoPatientType extends AbstractType
+class PatientSearchType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -29,16 +20,10 @@ class BimoPatientType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('urgency',  CheckboxType::class, array('required' => false))
-
-            ->add('medProtos', CollectionType::class, array(
-            'entry_type'   => MedProtoType::class,
-            'allow_add'    => true,
-            'allow_delete' => true,
-            'by_reference' => false
+            ->add('nom',      TextType::class)
+            ->add('save',     SubmitType::class, array(
+                'label'=>'rechercher',
             ))
-
-            ->add('save',      SubmitType::class)
         ;
     }
     
@@ -48,7 +33,7 @@ class BimoPatientType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'BimoBundle\Entity\Bimo'
+            'data_class' => 'BimoBundle\Entity\Patient'
         ));
     }
 
@@ -57,7 +42,7 @@ class BimoPatientType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'bimobundle_bimo';
+        return 'bimobundle_patient';
     }
 
 

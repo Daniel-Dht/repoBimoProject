@@ -11,6 +11,10 @@
 {# {{ form_widget(form.tags.vars.prototype.name)|e }} #}
   {# {{ form_end(form, {'render_rest': false}) }}  #}
   {# {{ form_end(form) }}  #}
+
+  {% for medProto in form.medProtos %}
+      <li>{% include 'BimoBundle:Bimo:formMedProto.html.twig' with {'form': medProto} %}</li>
+  {% endfor %}
   
   {{ form_widget(form) }}
   {{ form_end(form, {'render_rest': false}) }}

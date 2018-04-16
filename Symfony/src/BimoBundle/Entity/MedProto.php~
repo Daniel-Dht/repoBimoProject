@@ -4,7 +4,6 @@ namespace BimoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use UserBundle\Entity;
 
 /**
  * MedProto
@@ -744,30 +743,8 @@ class MedProto
     */
     public function updateDate()
     {
-        $this->setUpdatedAt(new \Datetime());
-    }
-   
-    /**
-     * Set updatedAt.
-     *
-     * @param \DateTime|null $updatedAt
-     *
-     * @return MedProto
-     */
-    public function setUpdatedAt($updatedAt = null)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
+    $this->setUpdatedAt(new \Datetime());
     }
 
-    /**
-     * Get updatedAt.
-     *
-     * @return \DateTime|null
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
+    
 }

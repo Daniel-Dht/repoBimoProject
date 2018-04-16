@@ -1,30 +1,57 @@
-	<div class="col-sm-10">
+	<div class="col-sm-25">
 		<div class="well">
-{# 		{{ form_start(form) }}
-      <fieldset>
-        <legend style="text-align: center;">BIMO</legend>
-          {{ form_label(form.save) }} {{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}
-          {{ form_label(form.urgency) }}{{ form_widget(form.urgency) }}
-          
-      </fieldset>   
-    
-       {{ form_row(form.medProtos) }} {{ form_widget(form.medProtos,{'attr':{'class': 'form-group row'}}) }} #}
-  {{ form_start(form)}}
-  {{ form_row(form.patient) }}
-  {{ form_row(form.urgency, {'label':'Ce BIMO necessite un traitement urgent'}) }}
 
-  <ul class="medProtos" data-prototype="{{ form_widget(form.medProtos.vars.prototype)|e }}">
-    {% for medProto in form.medProtos %}
-      <li> {{ form_row(medProto) }} </li>
-    {% endfor %}
-  </ul>
+      {{ form_start(form)}}
+      {{ form_row(form.patient) }}
+      {{ form_row(form.urgency, {'label':'Ce BIMO necessite un traitement urgent'}) }}
 
+      {# <div id='site_medProtos' data-prototype="{% filter escape %}{% include 'BimoBundle:Bimo:formMedProto.html.twig' with {'form': form.medProtos.vars.prototype} %}{% endfilter %}"> #}
+{# 
+        {% for medProto in form.medProtos %}
+            {% include 'BimoBundle:Bimo:formMedProto.html.twig' with {'form': medProto} %}
+        {% endfor %}
+ #}
+      
+      <ul class="medProtos" data-prototype="{{ form_widget(form.medProtos.vars.prototype)|e('html_attr') }}">
+        {# iterate over each existing tag and render its only field: name #}
+        {% for medProto in form.medProtos %}
+
+            <li>
+            {{ form_row(medProto.nomBefore, {'id' : 'liste1'} ) }}
+            {{ form_row(medProto.dosage, {'id' : 'liste2'}) }}
+            {{ form_row(medProto.formBefore, {'id' : 'liste2'}) }}
+            {{ form_row(medProto.poseBefore, {'id' : 'liste2'}) }}
+            {{ form_row(medProto.nom, {'id' : 'liste2'}) }}
+            {{ form_row(medProto.dosageBefore, {'id' : 'liste2'}) }}
+            {{ form_row(medProto.poso, {'id' : 'liste2'}) }}
+            {{ form_row(medProto.forme, {'id' : 'liste2'}) }}
+            {{ form_row(medProto.divergence, {'id' : 'liste2'}) }}
+            {{ form_row(medProto.source, {'id' : 'liste2'}) }}
+            {{ form_row(medProto.divergenceType, {'id' : 'liste2'}) }}
+            {{ form_row(medProto.severity, {'id' : 'liste2'}) }}
+            {{ form_row(medProto.proposition, {'id' : 'liste2'}) }}
+            {{ form_row(medProto.comment, {'id' : 'liste2'}) }}
+
+            {{ form_row(medProto.medStartBefore, {'id' : 'liste2'}) }}
+            {{ form_row(medProto.medEndBefore, {'id' : 'liste2'}) }}
+            {{ form_row(medProto.dateMedBefore) }}
+
+            {{ form_row(medProto.medStartHosp, {'id' : 'liste2'}) }}
+            {{ form_row(medProto.medEndHosp, {'id' : 'liste2'}) }}
+            {{ form_row(medProto.dateMedHosp, {'id' : 'liste2'}) }}
+
+          </li>
+
+        {% endfor %}
+       </ul>
+      {# </div> #}
       
       {# {{ form_widget(form) }} #}
-        {{ form_row(form.save) }}
+      {{ form_row(form.save) }}
 
-        {# {{ form_end(form, {'render_rest': false}) }} #}
+      {# {{ form_end(form, {'render_rest': false}) }} #}
       {{ form_end(form) }}
+
 		</div>
 	</div> 
 
@@ -52,6 +79,7 @@
       // index when inserting a new item (e.g. 2)
       $collectionHolder.data('index', $collectionHolder.find(':input').length);
 
+
       $addmedProtoLink.on('click', function(e) {
           // prevent the link from creating a "#" on the URL
           e.preventDefault();
@@ -63,11 +91,11 @@
   function addmedProtoForm($collectionHolder, $newLinkLi) {
     // Get the data-prototype explained earlier
     var prototype = $collectionHolder.data('prototype');
-
+    console.log($collectionHolder);
     // get the new index
     var index = $collectionHolder.data('index');
-
     var newForm = prototype;
+    console.log(index)
     // You need this only if you didn't set 'label' => false in your medProtos field in TaskType
     // Replace '__name__label__' in the prototype's HTML to
     // instead be a number based on how many items we have
@@ -108,70 +136,54 @@
    mais si vous l'avez en local, changez simplement l'adresse. #}
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
-{# Voici le script en question : #}
-<script type="text/javascript">
-  // $(document).ready(function() {
-  //   // On récupère la balise <div> en question qui contient l'attribut « data-prototype » qui nous intéresse.
-  //   var $container = $('div#bimobundle_bimo_medProtos');
+<style type="text/css">
 
-  //   // On ajoute un lien pour ajouter un nouveau MedProto
-  //   var $addLink = $('<a href="#" id="add_medProto" class="btn btn-success">Ajouter un med protocol</a>');
+.containeurMedProto
+{
+  display :flex;
+  justify-content:  space-around;
+  flex-direction: column; 
+}
+  .containeurMedChoice:nth-child(1)
+  {
+    display :flex;
+    justify-content:  space-around;
     
-  //   // On ajoute un nouveau champ à chaque clic sur le lien d'ajout.
-  //   $addLink.click(function(e) {
-  //     addMedProto($container);
-  //     e.preventDefault(); // évite qu'un # apparaisse dans l'URL
-  //     return false;
-  //   });
-
-  //   // On définit un compteur unique pour nommer les champs qu'on va ajouter dynamiquement
-  //   var index = $container.find(':input').length;
-  //   $container.append($addLink);
-  //   // On ajoute un premier champ automatiquement
-  //   if (index == 0) {
-  //     addMedProto($container);
-  //   } 
-  //   else {
-  //     // Pour chaque MedProto déjà existante, on ajoute un lien de suppression
-  //     $container.children('div').each(function() {
-  //       addDeleteLink($(this));
-  //     });
-  //   }
-
-  //   // La fonction qui ajoute un formulaire MedProto
-  //   function addMedProto($container) {
-  //     // Dans le contenu de l'attribut « data-prototype », on remplace :
-  //     // - le texte "__name__label__" qu'il contient par le label du champ
-  //     // - le texte "__name__" qu'il contient par le numéro du champ
-  //     var $prototype = $($container.attr('data-prototype').replace(/__name__label__/g, 'MedProto n°' + (index+1))
-  //         .replace(/__name__/g, index));
-
-  //     $container.append($addLink);
+  }
+    .beforeHosp:nth-child(1)
+    {
+      padding: 2%;
+      flex:   1;
+    }
+    .duringHosp:nth-child(2)
+    {
+      padding: 2%;
+      flex:   1;
+    }
+  .containeurTreatment:nth-child(3)  /* 3 car il ya le titre avant*/
+  {
+    display :flex;
+    justify-content:  space-around;
     
-  //     // On ajoute le prototype modifié à la fin de la balise <div>
-  //     $container.append($prototype);
+  }
+    .divergenceAndAll:nth-child(1)
+    {
+      padding: 2%;
+      flex:   4;
+    }
 
-  //     // Enfin, on incrémente le compteur pour que le prochain ajout se fasse avec un autre numéro
-  //     index++;
-  //     // On ajoute au prototype un lien pour pouvoir supprimer le MedProto
-  //     addDeleteLink($prototype);
-  //   }
+    .medAndPharmaComment:nth-child(2)
+    {
+      padding: 2%;
+      flex:   5;
+    }
+/*
+    .testTitre:nth-child(3)
+    {
+      padding: 2%;
+      flex:   1;
+    }*/
 
-  //   // La fonction qui ajoute un lien de suppression d'un medProto
-  //   function addDeleteLink($prototype) {
-  //     // Création du lien
-  //     $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
 
-  //     // Ajout du lien
-  //     $prototype.append($deleteLink);
 
-  //     // Ajout du listener sur le clic du lien
-  //     $deleteLink.click(function(e) {
-  //       $prototype.remove();
-  //       e.preventDefault(); // évite qu'un # apparaisse dans l'URL
-  //       return false;
-  //     });
-  //   }
-  // });
-
-</script> 
+</style>

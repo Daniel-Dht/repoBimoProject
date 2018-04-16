@@ -29,6 +29,18 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
 	    return new Paginator($query, true);
 	}
 
+	public function getUserByUsername($username)
+  	{
+	    $query = $this
+	    	->createQueryBuilder('u')
+	    	->where('u.username = :username')
+	    	->setParameter('username', $username)
+	    ;
+	    return $query
+			->getQuery()
+			->getOneOrNullResult();
+		;  
+	}	
 
 	public function getUser($id)
   	{
@@ -36,8 +48,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
 	    	->createQueryBuilder('u')
 	    	->where('u.id = $id')
 	    ;
-	    return $query;
-    
+	    return $query;   
 	}
 
 }

@@ -5,23 +5,12 @@
 {% endblock %}
 {% block body %}
 
-  <h2>Liste des patients</h2>
-{# style="display:flex;align-items: center;" #}
 
-  <div class="well" style="display:flex;align-items: center;">
-    {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
-    <label class="sr-only" for="inlineFormInput">Name</label>
-    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-      {{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}
-    </div>
-    <label class="sr-only" for="inlineFormInput">Name</label>
-    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-      {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
-    </div>
-    {{ form_rest(form) }}
-    {{ form_end(form) }}
-  </div>
-         
+  <a href="{{ path('listPatient') }}" class="btn btn-primary">
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    Retour à la liste de patients
+  </a>
+  <h2>Résultats de la recherche "{{ search }}"</h2>
 
   <div class="well">
 
@@ -43,7 +32,7 @@
         </li>
 
       {% else %}
-        <li>Pas (encore !) de patients</li>
+        <li> Aucun patient ne correspond à cette recherche</li>
       {% endfor %}
         
     </ul>
@@ -63,7 +52,7 @@
         <li>
           <a href="{{path('addPatient') }}" class="btn btn-success">
             <i class="glyphicon glyphicon-chevron-right"></i>
-            Ajouter un nouveau patient
+            Ajouter un patient
           </a>
         </li>
   {% endif %}
@@ -83,7 +72,7 @@
 
       divPatients.push(document.getElementById('patientHover{{patient.id}}'));
       liensBimo.push(document.createElement("a"));
-      textLiensBimo.push(document.createTextNode("Créer un BIMO")); // texte du lien
+      textLiensBimo.push(document.createTextNode("Créer un BIMO pour {{patient.id}}")); // texte du lien
 
       liensBimo[{{loop.index0}}].href = "{{ path('addBimo', {'idPatient': patient.id }) }}" ;
       liensBimo[{{loop.index0}}].class="lienBimo";
@@ -112,20 +101,6 @@
     </script>   
   {% endfor %}
 
-    <script>
-    var liste = Array();
-    {% for patient in listPatient %}
-
-      liste.push("{{ patient.prenom }} {{ patient.nom }}");
-
-    {% endfor %}
-
-    $('#bimobundle_patient_nom').autocomplete({   //  id=  "bimobundle_medproto_nomBefore"
-      source : liste,
-      minLength : 2
-    });
-
-  </script>
 
 
 {% endblock %}

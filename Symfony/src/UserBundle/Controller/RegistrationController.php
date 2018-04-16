@@ -26,6 +26,20 @@ class RegistrationController extends Controller
             $password = $encoder->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($password);
 
+            $usernameForm = $form->get('username')->getdata();
+            $checkUsername = $this
+                ->getDoctrine()
+                ->getManager()
+                ->getRepository('UserBundle:User')
+                ->getUserByUsername($usernameForm)
+            ;
+            if($checkUsername != null){
+                return $this->render('register.html.twig', [
+                    'form' => $form->createView(),
+                    'usernameAlreadyTaken' => $checkUsername,
+                ]);
+            }
+
             // Set their role
             $user->setRoles(array('ROLE_SUPER_ADMIN'));
             $user->setSalt('ok');

@@ -58,3 +58,10 @@ ownProfile:
         _controller: UserBundle:Security:ownProfile
     requirements:
         id: \d+
+
+deleteUser:
+    path:      /deleteUser/{id}
+    defaults:
+        _controller: UserBundle:Security:deleteUser
+    requirements:
+        id: \d+

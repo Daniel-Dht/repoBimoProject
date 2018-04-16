@@ -33,7 +33,13 @@ class Bimo
      * @ORM\OneToMany(targetEntity="BimoBundle\Entity\MedProto", mappedBy="bimo", cascade={"persist"},orphanRemoval=true)
      */
     private $medProtos; 
+    
 
+    /**
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User",cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $user;
 
     /**
      * @var bool
@@ -208,7 +214,7 @@ class Bimo
     */
     public function updateDate()
     {
-        $this->setUpdatedAt(new \Datetime());
+    $this->setUpdatedAt(new \Datetime());
     }
 
 
@@ -222,7 +228,6 @@ class Bimo
     public function setUpdatedAt($updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
-
 
         return $this;
     }

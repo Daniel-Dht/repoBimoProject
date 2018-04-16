@@ -32,4 +32,22 @@ class PatientRepository extends \Doctrine\ORM\EntityRepository
 	    // (n'oubliez pas le use correspondant en début de fichier)
 	    return new Paginator($query, true);
 	}
+
+	public function getPatientsFormSearch($searchName,$page,$nbPerPage) 
+	{
+
+	    $query = $this
+	    	->createQueryBuilder('p')
+			->where('p.prenom LIKE :prenom')
+			->orWhere('p.nom LIKE :nom')
+			->setParameter('prenom', '%'.$searchName.'%')
+			->setParameter('nom', '%'.$searchName.'%')
+	    ;
+
+		$query
+	    	->setFirstResult(($page-1) * $nbPerPage)
+	    	->setMaxResults($nbPerPage)
+	    ;
+	    return new Paginator($query, true);	
+	}
 }

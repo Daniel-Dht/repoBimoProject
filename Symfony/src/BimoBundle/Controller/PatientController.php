@@ -14,7 +14,7 @@ use BimoBundle\Entity\Patient;
 use BimoBundle\Form\MedProtoType ;
 use BimoBundle\Form\PatientType ;
 use BimoBundle\Form\PatientEditType ;
-
+use BimoBundle\Form\PatientSearchType ;
 
 class PatientController extends Controller
 {
@@ -96,7 +96,7 @@ class PatientController extends Controller
     }
 
 
-    public function listAction($page)
+    public function listAction(Request $request, $page)
 	{
 	    if ($page < 1) {
 	      throw new NotFoundHttpException('Page "'.$page.'" inexistante.');
@@ -119,12 +119,38 @@ class PatientController extends Controller
       		throw $this->createNotFoundException("La page ".$page." n'existe pas.");
     	}
 
+    	$patient = new Patient();
+    	$form = $this
+	    	->get('form.factory')
+	    	->create(PatientSearchType::class, $patient);
+
+ 		$form->handleRequest($request);
+
+    	if ($form->isSubmitted() && $form->isValid()) 
+	   	{
+	   		$search = $form["nom"]->getData();
+	   		$em = $this->getDoctrine()
+		    	->getManager()
+		    	->getRepository('BimoBundle:Patient')
+		    ;
+		    $listPatient = $em->getPatientsFormSearch($search, $page, $nbPerPage);
+
+			return $this->render('BimoBundle:Patient:listPatientAfterSearch.html.twig', array(
+	      		'listPatient' => $listPatient,
+		        'page' => $page,
+			    'nbPages' => $nbPages,
+			    'search' => $search,
+	  		));
+	    }
+
 	    // Et modifiez le 2nd argument pour injecter notre liste
 	    return $this->render('BimoBundle:Patient:listPatient.html.twig', array(
+	      'form' => $form->createView(),	
 	      'listPatient' => $listPatient,
 	      'page' => $page,
 	      'nbPages' => $nbPages
 	    ));
+
 	}
 
 	public function viewPatientAction($id, $idBimo=null)
@@ -133,18 +159,26 @@ class PatientController extends Controller
 	      ->getManager()
 	      ->getRepository('BimoBundle:Patient')
 	    ;
-
 	    $patient = $em->find($id);
 
 	    if (null === $patient) {
 	      throw new NotFoundHttpException("La patient d'id ".$id." n'existe pas.");
     	}
 
+    	//$patientNameConverter = $this->container->get('bimo.patientNameConverter');
+
+
+    	$lastBimo = $this->getDoctrine()
+	      ->getManager()
+	      ->getRepository('BimoBundle:Bimo')
+	      ->getLastBimoOfPatient($id);
+	    ;
+
 	    // Le render ne change pas, on passait avant un tableau, maintenant un objet
 	    return $this->render('BimoBundle:Patient:viewPatient.html.twig', array(
 	      'patient' => $patient,
 	      'idBimo' => $idBimo,
-
+	      '$lastBimo' => $lastBimo,
 	    ));
     }
 

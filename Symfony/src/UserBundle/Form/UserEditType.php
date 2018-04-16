@@ -25,7 +25,6 @@ class UserEditType extends AbstractType
     {
         $builder
             ->add('username',    TextType::class)
-            ->add('password',    TextType::class)
             // ->add('roles', CollectionType::class, array(
             //     'label'=>'Choix des droits',
             //     'entry_type' => ChoiceType::class,
@@ -43,6 +42,7 @@ class UserEditType extends AbstractType
                 'choices' =>
                     array
                     (
+                        'utilsateur non autorisé' => 'ROLE_REGISTER',
                         'simple utilsateur' => 'ROLE_USER',
                         'Adminsitrateur' => 'ROLE_ADMIN',
                         'Administrateur Superieur' => 'ROLE_SUPER_ADMIN',
@@ -51,7 +51,9 @@ class UserEditType extends AbstractType
                 'required' => true,
             ))  
             
-            ->add('save',           SubmitType::class)
+            ->add('save',   SubmitType::class, array(
+                'label'=>'enregistrer',
+            ))
         ;
     }
     

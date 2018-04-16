@@ -215,17 +215,47 @@ class SecurityController extends Controller
     return $this->render('UserBundle:User:listPatientOfUser.html.twig');
   }
 
-  public function ownProfileAction($username)
+  public function ownProfileAction($id)
   {
     $user =$em
         ->getRepository('UserBundle:User')
-        ->getUser($username)
+        ->getUser($id)
     ;
     return $this->render('UserBundle:User:viewUser.html.twig', array(
       'user' => $user,
     ));
   }
 
-  
+  public function deleteUserAction(Request $request, $id)
+    {
+      $em = $this->getDoctrine()->getManager();
+
+      $user = $em
+        ->getRepository('UserBundle:User')
+        ->find($id);
+
+      if (null === $user) {
+        throw new NotFoundHttpException("L'utilisateur d'id ".$id." n'existe pas.");
+      }
+      // On crée un formulaire vide, qui ne contiendra que le champ CSRF
+      // Cela permet de protéger la suppression d'annonce contre cette faille
+      $form = $this->get('form.factory')->create();
+
+      if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+        $em->remove($user);
+        $em->flush();
+
+        $request->getSession()->getFlashBag()->add('info', "L'utilisateur a bien été supprimée.");
+
+        return $this->redirectToRoute('listUser');
+      }
+      
+      return $this->render('UserBundle:user:deleteUser.html.twig', array(
+        'user' => $user,
+        'form'   => $form->createView(),
+      ));
+    }
+
+
 }
 

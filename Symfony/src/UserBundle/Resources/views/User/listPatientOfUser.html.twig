@@ -15,62 +15,70 @@
 
         <li class="noDec" >
 
-          <div class="patientHover" style ="padding:2px;">
-            
-            <p>
+          <div id='patientHover{{patient.id}}' class="patientHover" style ="padding:2px;">
+            <p id='paraHover{{patient.id}}'>
               <a href="{{ path('viewPatient', {'id': patient.id }) }}" >
                 {{ patient.nom | upper}} {{ patient.prenom }}
               </a>
-
-              {# Liens cachés affichés au survol : #}
-              <a  href="{{ path('addBimo', {'idPatient': patient.id }) }}"  class="toAppear btn btn-success" >  
-                   Créer un BIMO
-                <i class="glyphicon glyphicon-chevron-right"></i>
-              </a>
-
+              créé le {{ patient.date|date('d/m/Y') }} 
             </p>
           </div>
                 
         </li>
 
       {% else %}
-        <li>Pas (encore !) de patients</li>
+        <li>Pas de patient à votre charge</li>
       {% endfor %}
         
     </ul>
   </div>
 
-  <div id="dropezone">au revoir </div>
 
-<script>
-    
-    var id = $("#dropezone").text();
-    console.log(id);
+{# Génération des liens appraissants au mouseOver #}
+  <script type="text/javascript">
+    var liensBimo = new Array();  // Tableau contenant les liens vers la création de BIMO
+    var textLiensBimo = new Array(); // Tableau contenant le text du lien
+    var divPatients = new Array();  // Tableau des balises <div> dans lesquelles se trouve les liens vers les profils patients
+    var paraPatients = new Array();  // Tableau des balises <p> dans lesquelles se trouve les liens vers les profils patients
+    // var liensProfil = new Array(); 
+    // var textLiensProfil = new Array()
+  </script>
+  {% for patient in app.user.patients %}
 
-    $(".patientHover").each(function(n)
-    {
-      $(this)
-        .find('a')
-        .filter(".toAppear")
-        .hide()   
+    <script type="text/javascript"> 
 
-      $(this).on('mouseover', function(e) {
-         $(this)
-         .find('a')
-         .filter(".toAppear")      
-         .show()
+      divPatients.push(document.getElementById('patientHover{{patient.id}}'));
+      liensBimo.push(document.createElement("a"));
+      textLiensBimo.push(document.createTextNode("Créer un BIMO")); // texte du lien
+
+      liensBimo[{{loop.index0}}].href = "{{ path('addBimo', {'idPatient': patient.id }) }}" ;
+      liensBimo[{{loop.index0}}].class="lienBimo";
+      liensBimo[{{loop.index0}}].style="border-radius:4px; border:solid; border:1px; background-color:rgb(76,174,76); padding:8px; color:rgb(255,255,255)";
+      liensBimo[{{loop.index0}}].appendChild(textLiensBimo[{{loop.index0}}]);
+
+
+      paraPatients.push(document.getElementById('paraHover{{patient.id}}'));
+
+      divPatients[{{loop.index0}}].addEventListener('mouseover', function() {
+          //paraPatients[{{loop.index0}}].appendChild(liensProfil[{{loop.index0}}]);
+          paraPatients[{{loop.index0}}].appendChild(liensBimo[{{loop.index0}}]);
+          divPatients[{{loop.index0}}].style ="padding: 16px;background-color:rgb(200,200,200);border-radius: 5px;cursor:pointer;";    
+      });// On pourrait remplacer par this
+
+      divPatients[{{loop.index0}}].addEventListener('mouseleave', function() {
+          //paraPatients[{{loop.index0}}].removeChild(liensProfil[{{loop.index0}}]);
+          paraPatients[{{loop.index0}}].removeChild(liensBimo[{{loop.index0}}]);
+          divPatients[{{loop.index0}}].style ="padding: 2px;";
       });
-      $(this).on('mouseleave', function(e) {
-        $(this)
-        .find('a')
-        .filter(".toAppear")
-        .hide()
-      });
-      $(this).on('click', function(e) {
-       // window.location = "/repoBimo/Symfony/web/app_dev.php/viewPatient/"+43+"";
-      });
-    });
 
-</script>
+      divPatients[{{loop.index0}}].addEventListener('click', function() {         
+          window.location = "{{ path('viewPatient', {'id': patient.id })|escape('js') }}";
+      });
+
+    </script>   
+  {% endfor %}  
+   
+
+
 
 {% endblock %}
