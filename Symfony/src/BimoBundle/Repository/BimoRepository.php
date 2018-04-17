@@ -96,4 +96,21 @@ class BimoRepository extends \Doctrine\ORM\EntityRepository
 	    // (n'oubliez pas le use correspondant en début de fichier)
 	    return new Paginator($query, true);
 	}
+
+	public function getBimoFromHosp(\BimoBundle\Entity\Hosp $hosp) 
+	{
+	    $query = $this
+	    	->createQueryBuilder('b')
+	    	->andWhere('b.patient = :hospPatient')
+	    	->andWhere('b.date > :hospStartDate')
+	    	->andwhere('b.date < :hospReleaseDate')
+	    	->setParameter('hospPatient', $hosp->getPatient() )
+	    	->setParameter('hospStartDate', $hosp->getStartDate())
+	    	->setParameter('hospReleaseDate', $hosp->getReleaseDate())
+	    ;
+	    return $query
+			->getQuery()
+			->getResult()
+		;
+	}
 }

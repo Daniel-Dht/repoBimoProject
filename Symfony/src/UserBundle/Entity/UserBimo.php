@@ -4,10 +4,11 @@
 namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="UserBundle\Repository\UserBimoRepository")
  * @ORM\Table(name="userBimo")
  */
 class UserBimo
@@ -29,7 +30,7 @@ class UserBimo
    * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
    * @ORM\JoinColumn(nullable=false)
    */
-  private $User;
+  private $user;
 
   /**
    * @ORM\Column(name="updated_at", type="datetime", nullable=true)
@@ -108,7 +109,7 @@ class UserBimo
    */
   public function setUser(User $user)
   {
-      $this->User = $user;
+      $this->user = $user;
 
       return $this;
   }
@@ -120,7 +121,7 @@ class UserBimo
    */
   public function getUser()
   {
-      return $this->User;
+      return $this->user;
   }
 
   /**

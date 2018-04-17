@@ -14,9 +14,6 @@
 	    </a>
 	</p>
 
-	
-		
-
  		<h2>Modification de profil Utilisateur {{user.username}} </h2>
 		<div>
 			<div class="col-sm-10">
@@ -25,6 +22,9 @@
 
 			 		{{ form_label(form.username, "Nom d'utilisateur", {'label_attr': {'class': 'col-sm-0 control-label'}}) }}
 					{{ form_widget(form.username) }}
+					{% if usernameAlreadyTaken is defined and usernameAlreadyTaken is not empty %}
+			        	<i> ce nom d'utilisateur est déja pris ! </i><br/><br/>
+			        {% endif %}
 					<br/>
 
 					{% if is_granted('ROLE_ADMIN') %}

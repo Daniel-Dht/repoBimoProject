@@ -121,16 +121,20 @@ class SecurityController extends Controller
       ->getManager()
       ->getRepository('UserBundle:User')
     ;
-
     $user = $em->find($id);
-
     if (null === $user) {
       throw new NotFoundHttpException("L'utilisateur d'id ".$id." n'existe pas.");
     }
+    $em = $this->getDoctrine()
+      ->getManager()
+      ->getRepository('UserBundle:UserBimo')
+    ;
+    $listUserBimo = $em->getUBbyUser($user);
 
     // Le render ne change pas, on passait avant un tableau, maintenant un objet
     return $this->render('UserBundle:User:viewUser.html.twig', array(
       'user' => $user,
+      'listUserBimo' => $listUserBimo,
     ));
    }
 
@@ -150,16 +154,36 @@ class SecurityController extends Controller
       if ($request->isMethod('POST') &&
         $form->handleRequest($request)->isValid()) 
       {
+        // check si le nom d'utilisateur n'est pas déja pris
+        $usernameForm = $form->get('username')->getdata();
+        $checkUsername = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository('UserBundle:User')
+            ->getUserByUsername($usernameForm)
+        ;
+        if($checkUsername != null){
+            return $this->render('UserBundle:user:editUser.html.twig', [
+                'form' => $form->createView(),
+                'user' => $user,  
+                'usernameAlreadyTaken' => $checkUsername,
+            ]);
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
 
-      $em = $this->getDoctrine()->getManager();
-      $em->persist($user);
-      $em->flush();
+        $request->getSession()->getFlashBag()->add('notice', 'profil bien modifié.');
 
-      $request->getSession()->getFlashBag()->add('notice', 'profil bien modifié.');
-
-      return $this->render('UserBundle:user:viewUser.html.twig', array(
-            'user' => $user,
-        ));
+        $em = $this->getDoctrine()
+          ->getManager()
+          ->getRepository('UserBundle:UserBimo')
+        ;
+        $listUserBimo = $em->getUBbyUser($user);
+        return $this->render('UserBundle:user:viewUser.html.twig', array(
+              'user' => $user,
+              'listUserBimo' => $listUserBimo,
+          ));
       }
 
       return $this->render('UserBundle:user:editUser.html.twig', array(

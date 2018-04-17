@@ -21,10 +21,6 @@
   </p> 
 
   <br/>
-  <i>Date de création du bimo: {{bimo.date|date('d/m/Y')}}, dernière modification: {{bimo.updatedAt|date('d/m/Y H:i:s')}} </i>
-  <br/>
-
-
   <table id="tableau" >
     <thead>
 
@@ -96,7 +92,7 @@
 
       <tr style="background-color:#99C210;">
         <td colspan="14" id="newLine"> 
-          <a style="color:white;font-size:20px;" href="{{ path('addMedProto', {'idBimo': bimo.id} ) }}"  >
+          <a style="color:white;font-size:20px;" href="{{ path('addMedProto', {'idBimo': bimo.id, 'idUser':app.user.id} ) }}"  >
             Ajouter une ligne
             <i class="glyphicon glyphicon-edit"></i>
           </a>
@@ -120,10 +116,24 @@
       Extraire sous Format PDF
       <i class="glyphicon glyphicon-file"></i>
     </a>
-    <a href="{{ path('deleteBimo', {'bimo_id': bimo.id} ) }}" style="background-color:#E6501E;" class="btn btn-danger">
+    <a href="{{ path('deleteBimo', {'bimo_id': bimo.id} ) }}" style="background-color:#E6501E;" class="btn btn-danger pop">
       <i class="glyphicon glyphicon-trash"></i>
       Supprimer la Bimo
     </a>
+  </p>
+
+  <h3>Historique des modifications:</h3>
+  <p>
+    <i>Date de création du bimo: {{bimo.date|date('d/m/Y')}}, dernière modification: {{bimo.updatedAt|date('d/m/Y H:i:s')}} </i>
+    <br/><br/>  
+  
+    {% for userBimo in listUserBimo %}
+      <i>{{ userBimo.updatedAt|date('d/m/Y H:i:s') }}</i> :
+       <a href="{{ path('viewUser', {'id': userBimo.user.id} ) }}" class="btn btn-success pop" style="background-color:#E6501E;border:none;margin-bottom:3px;padding:3px 15px 0px 15px  ;">
+            <i class="glyphicon glyphicon-user"></i>
+          {{userBimo.user.username}}
+        </a> <br/>
+    {% endfor %}
   </p>
   
 <script type="text/javascript">
@@ -132,7 +142,7 @@
   //var line = document.getElementsByClassName    ('newLine');
   
   line.addEventListener('click', function() {         
-     window.location = "{{  path('addMedProto', {'idBimo': bimo.id} )|escape('js') }}";
+     window.location = "{{  path('addMedProto', {'idBimo': bimo.id, 'idUser':app.user.id} )|escape('js') }}";
   });
   line.addEventListener('mouseover', function() {         
     line.style = "cursor:pointer;background-color:#739600";
@@ -167,10 +177,10 @@
     });
 
     lienMedProto2[{{loop.index0}}].addEventListener('click', function() {         
-        window.location = "{{ path('editMedProto', {'id': medProto.id })|escape('js') }}";
+        window.location = "{{ path('editMedProto', {'id': medProto.id, 'idUser':app.user.id })|escape('js') }}";
     });
     lienMedProto[{{loop.index0}}].addEventListener('click', function() {         
-        window.location = "{{ path('editMedProto', {'id': medProto.id })|escape('js') }}";
+        window.location = "{{ path('editMedProto', {'id': medProto.id, 'idUser':app.user.id })|escape('js') }}";
     });
 
     lienMedProto[{{loop.index0}}].addEventListener('mouseout', function() {
@@ -184,6 +194,15 @@
       lienMedProto2[{{loop.index0}}].classList.remove("lineColorMouseOver");   
       lienMedProto[{{loop.index0}}].classList.remove("lineColorMouseOver");  
     });
+  
+    // liens user
+    $('.pop').mouseover(function(){
+        $(this).css('opacity','0.7');
+    });
+    $('.pop').mouseout(function(){
+        $(this).css('opacity','1');
+    });
+  
 
   {% endfor %}
 </script>

@@ -49,12 +49,10 @@
 
   {% if is_granted('ROLE_ADMIN') %}
     <h4> Droits Admin : </h4>
-        <li>
           <a href="{{path('addPatient') }}" class="btn btn-success">
             <i class="glyphicon glyphicon-chevron-right"></i>
             Ajouter un patient
           </a>
-        </li>
   {% endif %}
 
     {# Génération des liens appraissants au mouseOver #}
@@ -72,7 +70,7 @@
 
       divPatients.push(document.getElementById('patientHover{{patient.id}}'));
       liensBimo.push(document.createElement("a"));
-      textLiensBimo.push(document.createTextNode("Créer un BIMO pour {{patient.id}}")); // texte du lien
+      textLiensBimo.push(document.createTextNode("Créer un BIMO")); // texte du lien
 
       liensBimo[{{loop.index0}}].href = "{{ path('addBimo', {'idPatient': patient.id }) }}" ;
       liensBimo[{{loop.index0}}].class="lienBimo";

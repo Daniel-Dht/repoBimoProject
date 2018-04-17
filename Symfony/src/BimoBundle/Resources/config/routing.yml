@@ -6,6 +6,14 @@ addHosp:
     requirements:
         idPatient: \d+
 
+editHosp:
+    path:      /editHosp/{id}
+    defaults:
+        _controller: BimoBundle:Hosp:editHosp
+        username : v
+    requirements:
+        id: \d+
+
 viewHosp:
     path:      /viewHosp/{id}
     defaults:
@@ -21,20 +29,22 @@ deleteHosp:
         id: \d+
 
 addMedProto:
-    path:      /addMedProto/{idBimo}
+    path:      /addMedProto/{idBimo}/{idUser}
     defaults:
         _controller: BimoBundle:Bimo:addMedProto
         idBimo: null
     requirements:
         idBimo: \d+
+        idUser: \d+
 
 editMedProto:
-    path:      /editMedProto/{id}
+    path:      /editMedProto/{id}/{idUser}
     defaults:
         _controller: BimoBundle:Bimo:editMedProto
         id: null
     requirements:       
         id: \d+
+        idUser: \d+
 
 addBimo:
     path:      /addBimo/{idPatient}

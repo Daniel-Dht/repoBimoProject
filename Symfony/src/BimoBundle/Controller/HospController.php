@@ -108,19 +108,64 @@ class HospController extends Controller
     {
 	    $em = $this->getDoctrine()
 	      ->getManager()
-	      ->getRepository('BimoBundle:Hosp')
 	    ;
-
-	    $hosp = $em->find($id);
+	    $hosp = $em
+	    	->getRepository('BimoBundle:Hosp')
+	    	->find($id);
 
 	    if (null === $hosp) {
-	      throw new NotFoundHttpException("La hosp d'id ".$id." n'existe pas.");
+	      throw new NotFoundHttpException("L'hospitalisation d'id ".$id." n'existe pas.");
     	}
+	    $listBimo = $em
+	    	->getRepository('BimoBundle:Bimo')
+	    	->getBimoFromHosp($hosp)
+	    ;
 
 	    // Le render ne change pas, on passait avant un tableau, maintenant un objet
 	    return $this->render('BimoBundle:Hosp:viewHosp.html.twig', array(
 	      'hosp' => $hosp,
+	      'listBimo' => $listBimo,
 	    ));
+    }
+
+    public function EditHospAction($id, Request $request)
+    {
+    	$em = $this
+	    	->getDoctrine()
+	      	->getManager()
+	    ;
+ 		$hosp = $em
+	      	->getRepository('BimoBundle:Hosp')
+	      	->find($id)
+	    ;
+	    $form = $this
+	    	->get('form.factory')
+	    	->create(HospType::class, $hosp);
+
+
+	    if ($request->isMethod('POST') &&
+	    	$form->handleRequest($request)->isValid()) 
+	    {
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($hosp);
+			$em->flush();
+
+			$listBimo = $em
+	    	->getRepository('BimoBundle:Bimo')
+	    	->getBimoFromHosp($hosp)
+	    	;
+
+			return $this->render('BimoBundle:Hosp:viewHosp.html.twig', array(
+	      		'hosp' => $hosp,
+	      		'listBimo' => $listBimo,
+	  		));
+	    }
+
+	    return $this->render('BimoBundle:hosp:editHosp.html.twig', array(
+	      'form' => $form->createView(),
+	      'hosp' => $hosp,
+	    ));
+
     }
 
 }

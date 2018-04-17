@@ -60,12 +60,10 @@
 
   {% if is_granted('ROLE_ADMIN') %}
     <h4> Droits Admin : </h4>
-        <li>
-          <a href="{{path('addPatient') }}" class="btn btn-success">
-            <i class="glyphicon glyphicon-chevron-right"></i>
-            Ajouter un nouveau patient
-          </a>
-        </li>
+      <a href="{{path('addPatient') }}" class="btn btn-success">
+        <i class="glyphicon glyphicon-chevron-right"></i>
+        Ajouter un nouveau patient
+      </a>
   {% endif %}
 
     {# Génération des liens appraissants au mouseOver #}

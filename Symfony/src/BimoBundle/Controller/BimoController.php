@@ -26,9 +26,8 @@ class BimoController extends Controller
 {
 
 
-    public function AddMedProtoAction(Request $request, $idBimo)
+    public function AddMedProtoAction(Request $request, $idBimo, $idUser)
     {
-
     	$medProto = new MedProto();
 
 	    $bimo = $this
@@ -53,19 +52,28 @@ class BimoController extends Controller
 				->getManager()
 				->getRepository('BimoBundle:MedProto');
 
-	    	$texteDosage = $form->get('dosage')->getdata();
+	    	$texteDosage = $form->get('poso')->getdata();
 			$texteDosage = $emDos->dosageExpression($texteDosage);
-	    	$medProto->setDosage($texteDosage);
+	    	$medProto->setPoso($texteDosage);
 
-	    	$texteDosageBefore = $form->get('dosageBefore')->getdata();
+	    	$texteDosageBefore = $form->get('poseBefore')->getdata();
 			$texteDosageBefore = $emDos->dosageExpression($texteDosageBefore);
-	    	$medProto->setDosageBefore($texteDosageBefore);
+	    	$medProto->setPoseBefore($texteDosageBefore);
 
 	    	$bimo->addMedProto($medProto);
 	    	$bimo->updateDate();
 
 			$em = $this->getDoctrine()->getManager();
-			
+			$user = $em
+					->getRepository('UserBundle:User')
+					->find($idUser);
+			if (null === $user) {
+		      throw new NotFoundHttpException("L'utilisateur d'id ".$idUser." n'existe pas.");
+		    }
+		    $userBimo = new userBimo();
+	    	$userBimo->setBimo($bimo);
+	    	$userBimo->setUser($user);	
+	    	$em->persist($userBimo);
 			$em->persist($medProto);
 			$em->flush();
 
@@ -92,7 +100,7 @@ class BimoController extends Controller
 
     }
 
-	public function EditMedProtoAction(Request $request, $id)
+	public function EditMedProtoAction(Request $request, $id, $idUser)
     {
 
 	    $medProto = $this
@@ -101,14 +109,10 @@ class BimoController extends Controller
 	      	->getRepository('BimoBundle:MedProto')
 	      	->find($id)
 	    ;
-
 	    if (null === $medProto) {
 	      throw new NotFoundHttpException("La ligne de ce BIMO d'id ".$id." n'existe pas.");
 	    }
 	    $bimo = $medProto->getBimo();
-	    if (null === $bimo) {
-	      throw new NotFoundHttpException("Le BIMO d'id ".$medProto->getId()." n'existe pas.");
-	    }
 	    
 	    $form = $this
 	    	->get('form.factory')
@@ -121,17 +125,28 @@ class BimoController extends Controller
 				->getManager()
 				->getRepository('BimoBundle:MedProto');
 
-	    	$texteDosage = $form->get('dosage')->getdata();
+	    	$texteDosage = $form->get('poso')->getdata();
 			$texteDosage = $emDos->dosageExpression($texteDosage);
-	    	$medProto->setDosage($texteDosage);
+	    	$medProto->setPoso($texteDosage);
 
-
-	    	$texteDosageBefore = $form->get('dosageBefore')->getdata();
+	    	$texteDosageBefore = $form->get('poseBefore')->getdata();
 			$texteDosageBefore = $emDos->dosageExpression($texteDosageBefore);
-	    	$medProto->setDosageBefore($texteDosageBefore);
+	    	$medProto->setPoseBefore($texteDosageBefore);
 
 	    	$bimo->updateDate();
 			$em = $this->getDoctrine()->getManager();
+			
+			$user = $em
+					->getRepository('UserBundle:User')
+					->find($idUser);
+			if ($user == null ) {
+		      throw new NotFoundHttpException("L'utilisateur d'id ".$idUser." n'existe pas.");
+		    }
+		    $userBimo = new userBimo();
+	    	$userBimo->setBimo($bimo);
+	    	$userBimo->setUser($user);	
+	    	$em->persist($userBimo);
+
 			$em->persist($medProto);
 			$em->flush();
 
@@ -351,14 +366,21 @@ class BimoController extends Controller
 
     public function viewBimoAction(Bimo $bimo)
     {
-
     	$listMedProto =$em = $this->getDoctrine()
 	      ->getManager()
 	      ->getRepository('BimoBundle:MedProto')
 	      ->findBy(array('bimo' => $bimo))
 	    ;
+
+	    $em = $this->getDoctrine()
+	      ->getManager()
+	      ->getRepository('UserBundle:UserBimo')
+	    ;
+	    $listUserBimo = $em->getUBbyBimo($bimo);
+
 	    return $this->render('BimoBundle:Bimo:viewBimo.html.twig', array(
 	      'bimo' => $bimo,
+	      'listUserBimo' => $listUserBimo,
 	    ));
     }
 

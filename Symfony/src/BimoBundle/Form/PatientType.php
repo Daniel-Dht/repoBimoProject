@@ -23,17 +23,17 @@ class PatientType extends AbstractType
             ->add('nom',      TextType::class, array(
                 'label'=>'Nom',
                 'attr' => array(
-                'placeholder' => 'BLANCO'
+                'placeholder' => 'Dupont'
             )))
             ->add('prenom',   TextType::class, array(
                 'label'=>'Prénom',
                 'attr' => array(
-                'placeholder' => 'Eric'
+                'placeholder' => 'Michel'
             )))
             ->add('birthDay',   TextType::class, array(
                 'required' => false,
                 'attr' => array(
-                'placeholder' => '25/07/1987'
+                'placeholder' => '**/**/****'
             )))
             ->add('adress',   TextType::class, array(
                 'required' => false,
@@ -43,7 +43,7 @@ class PatientType extends AbstractType
             ->add('phoneNumber',   TextType::class, array(
                 'required' => false,
                 'attr' => array(
-                'placeholder' => '06 44 10 32 41'
+                'placeholder' => '06 ** ** ** ** **'
             )))
             ->add('socialSecurityNumber',   TextType::class, array(
                 'required' => false,

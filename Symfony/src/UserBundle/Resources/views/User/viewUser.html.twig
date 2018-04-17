@@ -17,26 +17,34 @@
         Cet utilisateur ne possède pas de droit
       {% endfor %}
     </p>
-    <p>
-      Description : on pourrait mettre ici les dates d'entrée dans l'hopital, son nombre de Bimo totale, 
-      Les liens de tous les Bimos créées !
-    </p> 
+
     <p> adresse mail : <strong> {{user.email}} </strong></p>
     <h3>Patients à charges :</h3>
     {% if not user.patients.empty %}
       <p>
         {% for patient in user.patients %}
-          <a href="{{ path('viewPatient',{'id':patient.id}) }}" class="btn btn-info">
-            <i class="glyphicon glyphicon-eye-open"></i>
+          <a href="{{ path('viewPatient',{'id':patient.id}) }}" class="btn btn-info pop" style="background-color:#99C210;border:none;">
+            <i class="glyphicon glyphicon-user"></i>
             {{ patient.nom }} {{ patient.prenom }}
           </a>
-          {% if not loop.last %}, {% endif %}
         {% endfor %}
+        {% else %}
+          aucun Patient à charge
       </p>
     {% endif %}
+    <h3>Dernier BIMO modifié :</h3>
+    <p>
+      {% for userBimo in listUserBimo %}
+          <a href="{{ path('viewBimo',{'id':userBimo.bimo.id}) }}" class="btn btn-info pop" style="background-color:#8B2980;border:none;">
+              <i class="glyphicon glyphicon-eye-open"></i>
+              {{ userBimo.bimo.patient.nom }} {{ userBimo.bimo.patient.prenom }} <br/>
+              <i>{{ userBimo.updatedAt|date('d/m/Y H:i:s') }}</i>
+          </a>
+      {% else %}
+        Cet utilisateur ne possède pas de bimo
+      {% endfor %}
+    </p>
     <br/>
-
-
     <p>
       <a href="{{ path('listUser') }}" class="btn btn-primary">
         <i class="glyphicon glyphicon-chevron-left"></i>
@@ -56,5 +64,13 @@
     </p>
   </div>
   
+  <script>
+    $('.pop').mouseover(function(){
+        $(this).css('opacity','0.7');
+    });
+    $('.pop').mouseout(function(){
+        $(this).css('opacity','1');
+    });
+  </script>
 
 {% endblock %}
