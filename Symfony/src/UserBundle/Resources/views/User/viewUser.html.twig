@@ -63,6 +63,12 @@
 
     </p>
   </div>
+
+  {% for userBimo in test %}
+    {{ userBimo.id}}, {{ userBimo.user.id }}, bimo : {{ userBimo.bimo.id }} : {{ userBimo.updatedAt|date('d/m/Y H:i:s')}}
+    <br/>
+
+  {% endfor %}
   
   <script>
     $('.pop').mouseover(function(){

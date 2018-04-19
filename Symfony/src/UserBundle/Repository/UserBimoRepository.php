@@ -13,6 +13,20 @@ use BimoBundle\Entity\Bimo;
  */
 class UserBimoRepository extends \Doctrine\ORM\EntityRepository
 {
+
+	public function getLastUBofUser(\UserBundle\Entity\User $user) {
+		//Pour chaque bimo modifi", renvois la dernière date de modification
+		$query = $this
+	    	->createQueryBuilder('ub')
+	    	->where('ub.user = :user')->setParameter('user', $user)
+	    	->orderBy('ub.bimo')	
+	    ;
+	    return $query
+			->getQuery()
+			->getResult()
+		;	
+	}
+
 	public function getUB(User $user, \BimoBundle\Entity\Bimo $bimo) {
 		$query = $this
 	    	->createQueryBuilder('ub')

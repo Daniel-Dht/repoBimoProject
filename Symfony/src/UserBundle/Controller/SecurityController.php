@@ -131,10 +131,13 @@ class SecurityController extends Controller
     ;
     $listUserBimo = $em->getUBbyUser($user);
 
+    $test = $em->getLastUBofUser($user);
+
     // Le render ne change pas, on passait avant un tableau, maintenant un objet
     return $this->render('UserBundle:User:viewUser.html.twig', array(
       'user' => $user,
       'listUserBimo' => $listUserBimo,
+      'test' => $test,
     ));
    }
 
